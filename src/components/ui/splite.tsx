@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, Suspense, useEffect } from "react";
 import Spline from "@splinetool/react-spline";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface SplineSceneProps {
   scene: string;
@@ -12,20 +13,47 @@ interface SplineSceneProps {
 
 export function SplineScene({ scene, className }: SplineSceneProps) {
   const [isLoading, setIsLoading] = useState(true);
+  const isMobile = useIsMobile();
+  const [shouldRender, setShouldRender] = useState(true);
+
+  useEffect(() => {
+    // On mobile, we'll wait a bit before loading the 3D scene to prevent initial page load jank
+    if (isMobile) {
+      const timer = setTimeout(() => {
+        setShouldRender(true);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [isMobile]);
 
   return (
-    <div className={cn("w-full h-full bg-transparent relative", className)}>
+    <div 
+      className={cn(
+        "w-full h-full bg-transparent relative",
+        isMobile ? "max-h-[300px]" : "max-h-[500px]",
+        className
+      )}
+    >
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center">
           <Skeleton className="w-full h-full rounded-lg" />
         </div>
       )}
-      <Suspense fallback={null}>
-        <Spline
-          scene={scene}
-          onLoad={() => setIsLoading(false)}
-        />
-      </Suspense>
+      {shouldRender && (
+        <Suspense fallback={null}>
+          <Spline
+            scene={scene}
+            onLoad={() => setIsLoading(false)}
+            style={{
+              width: '100%',
+              height: isMobile ? '300px' : '500px',
+              maxWidth: '100vw',
+              transform: isMobile ? 'scale(0.8)' : 'none',
+              transformOrigin: 'center center'
+            }}
+          />
+        </Suspense>
+      )}
     </div>
   );
 }
