@@ -35,10 +35,10 @@ const Privacy = () => {
             grouped together as follows:
           </p>
           <ul className="list-disc pl-6 mt-2">
-            <li>Identity Data</li>
-            <li>Contact Data</li>
-            <li>Technical Data</li>
-            <li>Usage Data</li>
+            <li>Identity Data: includes first name, last name, username or similar identifier</li>
+            <li>Contact Data: includes billing address, email address and telephone numbers</li>
+            <li>Technical Data: includes internet protocol (IP) address, browser type and version, time zone setting and location</li>
+            <li>Usage Data: includes information about how you use our website and services</li>
           </ul>
 
           <h2 className="text-2xl font-semibold mt-8 mb-4">4. How We Use Your Data</h2>
@@ -52,6 +52,33 @@ const Privacy = () => {
             <li>To communicate with you</li>
             <li>To comply with legal obligations</li>
           </ul>
+
+          <h2 className="text-2xl font-semibold mt-8 mb-4">5. Data Security</h2>
+          <p>
+            We have put in place appropriate security measures to prevent your personal data from being
+            accidentally lost, used or accessed in an unauthorized way, altered or disclosed. In addition,
+            we limit access to your personal data to those employees, agents, contractors and other third
+            parties who have a business need to know.
+          </p>
+
+          <h2 className="text-2xl font-semibold mt-8 mb-4">6. Your Legal Rights</h2>
+          <p>
+            Under certain circumstances, you have rights under data protection laws in relation to your personal data, including:
+          </p>
+          <ul className="list-disc pl-6 mt-2">
+            <li>The right to access your personal data</li>
+            <li>The right to correction of your personal data</li>
+            <li>The right to erasure of your personal data</li>
+            <li>The right to object to processing of your personal data</li>
+            <li>The right to data portability</li>
+          </ul>
+
+          <h2 className="text-2xl font-semibold mt-8 mb-4">7. Changes to This Privacy Policy</h2>
+          <p>
+            We may update our Privacy Policy from time to time. We will notify you of any changes by posting
+            the new Privacy Policy on this page and updating the "Last updated" date at the top of this
+            Privacy Policy.
+          </p>
         </div>
       </div>
       <Footer />
