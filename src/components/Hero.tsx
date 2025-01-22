@@ -35,10 +35,10 @@ export const Hero = () => {
           
           <div className="flex h-full">
             <div className="flex-1 p-8 relative z-10 flex flex-col justify-center">
-              <h1 className="text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-primary to-primary-light">
+              <h1 className="text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-[#000000] to-[#333333]">
                 AI Voice Assistant
               </h1>
-              <p className="mt-4 text-primary-dark max-w-lg text-lg">
+              <p className="mt-4 text-[#222222] max-w-lg text-lg">
                 Experience the future of client communication with our intelligent voice AI technology. 
                 Seamlessly integrate natural conversations across your platforms.
               </p>
