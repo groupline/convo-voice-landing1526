@@ -5,13 +5,30 @@ export const Footer = () => {
   return (
     <footer className="bg-secondary py-12 mt-20">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           <div className="space-y-4">
             <Logo />
             <address className="not-italic text-gray-600">
               1309 Coffeen Avenue STE 1200<br />
               Sheridan Wyoming 82801
             </address>
+          </div>
+          <div className="space-y-4">
+            <h3 className="font-semibold text-gray-800">Menu</h3>
+            <nav className="flex flex-col space-y-2">
+              <a href="/" className="text-gray-600 hover:text-primary transition-colors">
+                Home
+              </a>
+              <a href="#features" className="text-gray-600 hover:text-primary transition-colors">
+                Features
+              </a>
+              <a href="#pricing" className="text-gray-600 hover:text-primary transition-colors">
+                Pricing
+              </a>
+              <a href="#contact" className="text-gray-600 hover:text-primary transition-colors">
+                Contact
+              </a>
+            </nav>
           </div>
           <div className="flex justify-start md:justify-end items-start">
             <div className="flex gap-4">
