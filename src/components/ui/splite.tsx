@@ -10,7 +10,7 @@ interface SplineSceneProps {
 
 export function SplineScene({ scene, className }: SplineSceneProps) {
   return (
-    <div className={cn("w-full h-full", className)}>
+    <div className={cn("w-full h-full bg-transparent", className)}>
       <Spline scene={scene} />
     </div>
   );
