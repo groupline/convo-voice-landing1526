@@ -27,7 +27,7 @@ export const Hero = () => {
           </div>
         </div>
 
-        <Card className="w-full h-[500px] bg-primary-dark/90 relative overflow-hidden border-0">
+        <Card className="w-full h-[500px] relative overflow-hidden border-0 bg-transparent">
           <Spotlight
             className="-top-40 left-0 md:left-60 md:-top-20"
             fill="white"
