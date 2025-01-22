@@ -13,13 +13,13 @@ const features = [
   },
   {
     icon: Users,
-    title: "Customer Engagement",
-    description: "24/7 customer support with personalized interactions",
+    title: "Client Engagement",
+    description: "24/7 client support with personalized interactions",
   },
   {
     icon: ChartBar,
     title: "Lead Generation",
-    description: "Convert conversations into qualified leads automatically",
+    description: "Convert prospects into qualified leads automatically",
   },
 ];
 
@@ -30,7 +30,7 @@ export const Features = () => {
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold mb-4">Powerful AI Features</h2>
           <p className="text-foreground/80 max-w-2xl mx-auto">
-            Transform your customer interactions with our advanced AI solutions
+            Transform your client interactions with our advanced AI solutions
           </p>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
