@@ -17,12 +17,9 @@ export const Hero = () => {
           <p className="text-xl text-foreground/80 mb-8 animate-fade-in">
             Empower your business with intelligent AI systems that generate leads autonomously and automate everyday tasks, saving you time and money
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in">
+          <div className="flex justify-center animate-fade-in">
             <Button className="bg-primary hover:bg-primary-dark text-white px-8 py-6 text-lg">
               Book A Call
-            </Button>
-            <Button variant="outline" className="px-8 py-6 text-lg">
-              Watch Demo
             </Button>
           </div>
         </div>
