@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { MessageCircle, X, Send, Loader2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface Message {
   role: 'user' | 'assistant';
@@ -38,24 +39,19 @@ export const ChatBot = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      const { data, error } = await supabase.functions.invoke('chat', {
+        body: {
           messages: [...messages, userMessage].map(msg => ({
             role: msg.role,
             content: msg.content
           }))
-        })
+        }
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to get response');
+      if (error) {
+        throw error;
       }
 
-      const data = await response.json();
       const assistantMessage = { 
         role: 'assistant' as const, 
         content: data.generatedText 
@@ -63,9 +59,10 @@ export const ChatBot = () => {
       
       setMessages(prev => [...prev, assistantMessage]);
     } catch (error) {
+      console.error('Chat error:', error);
       toast({
         title: "Error",
-        description: "Failed to get response from AI",
+        description: "Failed to get response from AI. Please try again later.",
         variant: "destructive"
       });
     } finally {
