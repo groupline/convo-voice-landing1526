@@ -1,25 +1,25 @@
-import { MessageSquare, Voicemail, Users, ChartBar } from "lucide-react";
+import { Robot, Sparkles, Clock, DollarSign } from "lucide-react";
 
 const features = [
   {
-    icon: Voicemail,
-    title: "AI Voice Integration",
-    description: "Natural voice interactions powered by advanced AI technology",
+    icon: Robot,
+    title: "AI Task Automation",
+    description: "Automate repetitive tasks and workflows with intelligent AI systems",
   },
   {
-    icon: MessageSquare,
-    title: "Social Media Management",
-    description: "Automated responses across all major social platforms",
-  },
-  {
-    icon: Users,
-    title: "Client Engagement",
-    description: "24/7 client support with personalized interactions",
-  },
-  {
-    icon: ChartBar,
+    icon: Sparkles,
     title: "Lead Generation",
-    description: "Convert prospects into qualified leads automatically",
+    description: "Generate and qualify leads automatically across multiple channels",
+  },
+  {
+    icon: Clock,
+    title: "Time Optimization",
+    description: "Save countless hours by automating mundane business processes",
+  },
+  {
+    icon: DollarSign,
+    title: "Cost Reduction",
+    description: "Reduce operational costs through efficient AI-powered automation",
   },
 ];
 
@@ -28,9 +28,9 @@ export const Features = () => {
     <section id="features" className="py-24 bg-secondary">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold mb-4">Powerful AI Features</h2>
+          <h2 className="text-3xl font-bold mb-4">AI-Powered Business Solutions</h2>
           <p className="text-foreground/80 max-w-2xl mx-auto">
-            Transform your client interactions with our advanced AI solutions
+            Transform your business operations with our comprehensive AI automation suite
           </p>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
