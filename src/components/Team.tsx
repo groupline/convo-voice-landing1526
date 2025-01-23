@@ -5,27 +5,27 @@ import { Card } from "@/components/ui/card";
 const people = [
   {
     id: 1,
-    name: "John Doe",
-    designation: "Software Engineer",
-    image: "/placeholder.svg"
+    name: "Sarah Chen",
+    designation: "AI Research Lead",
+    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60"
   },
   {
     id: 2,
-    name: "Robert Johnson",
-    designation: "Product Manager",
-    image: "/placeholder.svg"
+    name: "Marcus Thompson",
+    designation: "ML Engineering Director",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60"
   },
   {
     id: 3,
-    name: "Jane Smith",
-    designation: "Data Scientist",
-    image: "/placeholder.svg"
+    name: "Elena Rodriguez",
+    designation: "NLP Specialist",
+    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60"
   },
   {
     id: 4,
-    name: "Emily Davis",
-    designation: "UX Designer",
-    image: "/placeholder.svg"
+    name: "David Park",
+    designation: "AI Solutions Architect",
+    image: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60"
   }
 ];
 
@@ -34,9 +34,9 @@ export const Team = () => {
     <section id="team" className="py-24 bg-secondary">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold mb-4">Meet Our Team</h2>
+          <h2 className="text-3xl font-bold mb-4">Meet Our AI Experts</h2>
           <p className="text-foreground/80 max-w-2xl mx-auto">
-            Our talented team of experts is dedicated to bringing you the best AI solutions
+            Our team of AI specialists combines deep technical expertise with innovative thinking to deliver cutting-edge solutions
           </p>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
