@@ -9,47 +9,47 @@ export const Footer = () => {
           {/* Company Info Section */}
           <div className="space-y-4">
             <Logo />
-            <p className="text-gray-600">
+            <p className="text-sm text-gray-600">
               Empowering businesses with intelligent AI solutions for growth and efficiency.
             </p>
           </div>
 
           {/* Contact Section */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-lg">Contact Us</h3>
+            <h3 className="font-semibold text-base">Contact Us</h3>
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-gray-600">
-                <MapPin className="w-5 h-5 text-primary" />
-                <address className="not-italic">
+                <MapPin className="w-4 h-4 text-primary" />
+                <address className="not-italic text-sm">
                   1309 Coffeen Avenue STE 1200<br />
                   Sheridan Wyoming 82801
                 </address>
               </div>
               <div className="flex items-center gap-2 text-gray-600">
-                <Mail className="w-5 h-5 text-primary" />
-                <a href="mailto:contact@convovoice.ai">contact@convovoice.ai</a>
+                <Mail className="w-4 h-4 text-primary" />
+                <a href="mailto:contact@convovoice.ai" className="text-sm">contact@convovoice.ai</a>
               </div>
               <div className="flex items-center gap-2 text-gray-600">
-                <Phone className="w-5 h-5 text-primary" />
-                <a href="tel:+1234567890">+1 (234) 567-890</a>
+                <Phone className="w-4 h-4 text-primary" />
+                <a href="tel:+1234567890" className="text-sm">+1 (234) 567-890</a>
               </div>
             </div>
           </div>
 
           {/* Quick Links Section */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-lg">Quick Links</h3>
+            <h3 className="font-semibold text-base">Quick Links</h3>
             <div className="space-y-2">
-              <div><a href="#features" className="text-gray-600 hover:text-primary">Features</a></div>
-              <div><a href="#pricing" className="text-gray-600 hover:text-primary">Pricing</a></div>
-              <div><a href="#about" className="text-gray-600 hover:text-primary">About Us</a></div>
-              <div><a href="#blog" className="text-gray-600 hover:text-primary">Blog</a></div>
+              <div><a href="#features" className="text-sm text-gray-600 hover:text-primary">Features</a></div>
+              <div><a href="#pricing" className="text-sm text-gray-600 hover:text-primary">Pricing</a></div>
+              <div><a href="#about" className="text-sm text-gray-600 hover:text-primary">About Us</a></div>
+              <div><a href="#blog" className="text-sm text-gray-600 hover:text-primary">Blog</a></div>
             </div>
           </div>
 
           {/* Social Media Section */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-lg">Connect With Us</h3>
+            <h3 className="font-semibold text-base">Connect With Us</h3>
             <div className="flex gap-4">
               <a
                 href="https://instagram.com"
@@ -57,7 +57,7 @@ export const Footer = () => {
                 rel="noopener noreferrer"
                 className="p-2 rounded-full hover:bg-primary/10 transition-colors"
               >
-                <Instagram className="w-6 h-6 text-primary" />
+                <Instagram className="w-5 h-5 text-primary" />
               </a>
               <a
                 href="https://twitter.com"
@@ -65,7 +65,7 @@ export const Footer = () => {
                 rel="noopener noreferrer"
                 className="p-2 rounded-full hover:bg-primary/10 transition-colors"
               >
-                <Twitter className="w-6 h-6 text-primary" />
+                <Twitter className="w-5 h-5 text-primary" />
               </a>
               <a
                 href="https://facebook.com"
@@ -73,7 +73,7 @@ export const Footer = () => {
                 rel="noopener noreferrer"
                 className="p-2 rounded-full hover:bg-primary/10 transition-colors"
               >
-                <Facebook className="w-6 h-6 text-primary" />
+                <Facebook className="w-5 h-5 text-primary" />
               </a>
               <a
                 href="https://linkedin.com"
@@ -81,7 +81,7 @@ export const Footer = () => {
                 rel="noopener noreferrer"
                 className="p-2 rounded-full hover:bg-primary/10 transition-colors"
               >
-                <Linkedin className="w-6 h-6 text-primary" />
+                <Linkedin className="w-5 h-5 text-primary" />
               </a>
             </div>
           </div>
@@ -89,7 +89,7 @@ export const Footer = () => {
 
         {/* Bottom Section with Privacy Links */}
         <div className="border-t border-gray-200 pt-8 text-center">
-          <div className="flex justify-center gap-4 text-sm text-gray-500">
+          <div className="flex justify-center gap-4 text-xs text-gray-500">
             <a href="/privacy" className="hover:text-primary transition-colors">
               Privacy Policy
             </a>
@@ -97,7 +97,7 @@ export const Footer = () => {
               Terms & Conditions
             </a>
           </div>
-          <div className="mt-4 text-sm text-gray-500">
+          <div className="mt-4 text-xs text-gray-500">
             © 2025 SurgeAi. All rights reserved.
           </div>
         </div>
