@@ -4,6 +4,7 @@ import { Features } from "@/components/Features";
 import { Team } from "@/components/Team";
 import { Testimonials } from "@/components/Testimonials";
 import { Footer } from "@/components/Footer";
+import { ChatBot } from "@/components/ChatBot";
 
 const Index = () => {
   return (
@@ -14,6 +15,7 @@ const Index = () => {
       <Team />
       <Testimonials />
       <Footer />
+      <ChatBot />
     </div>
   );
 };
