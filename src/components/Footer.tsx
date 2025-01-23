@@ -98,7 +98,7 @@ export const Footer = () => {
             </a>
           </div>
           <div className="mt-4 text-sm text-gray-500">
-            © {new Date().getFullYear()} ConvoVoice. All rights reserved.
+            © 2025 SurgeAi. All rights reserved.
           </div>
         </div>
       </div>
