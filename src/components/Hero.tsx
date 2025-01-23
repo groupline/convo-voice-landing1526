@@ -19,7 +19,7 @@ export const Hero = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in">
             <Button className="bg-primary hover:bg-primary-dark text-white px-8 py-6 text-lg">
-              Start Free Trial
+              Book A Call
             </Button>
             <Button variant="outline" className="px-8 py-6 text-lg">
               Watch Demo

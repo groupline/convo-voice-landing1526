@@ -10,11 +10,11 @@ export const Navbar = () => {
           <a href="#features" className="text-foreground/80 hover:text-foreground transition-colors">
             Features
           </a>
-          <a href="#pricing" className="text-foreground/80 hover:text-foreground transition-colors">
-            Pricing
+          <a href="/about" className="text-foreground/80 hover:text-foreground transition-colors">
+            About
           </a>
           <Button variant="default" className="bg-primary hover:bg-primary-dark text-white">
-            Get Started
+            Book A Call
           </Button>
         </div>
       </div>
