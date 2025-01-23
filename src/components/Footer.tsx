@@ -97,7 +97,7 @@ export const Footer = () => {
               Terms & Conditions
             </a>
           </div>
-          <div className="mt-4 text-xs text-gray-500">
+          <div className="mt-4 text-[10px] text-gray-500">
             © 2025 SurgeAi. All rights reserved.
           </div>
         </div>
