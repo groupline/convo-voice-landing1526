@@ -17,11 +17,11 @@ export function SplineScene({ scene, className }: SplineSceneProps) {
   const [shouldRender, setShouldRender] = useState(true);
 
   useEffect(() => {
-    // On mobile, we'll wait a bit before loading the 3D scene to prevent initial page load jank
+    // Reduced wait time on mobile from 1000ms to 500ms
     if (isMobile) {
       const timer = setTimeout(() => {
         setShouldRender(true);
-      }, 1000);
+      }, 500);
       return () => clearTimeout(timer);
     }
   }, [isMobile]);
@@ -48,7 +48,8 @@ export function SplineScene({ scene, className }: SplineSceneProps) {
               width: '100%',
               height: isMobile ? '300px' : '500px',
               maxWidth: '100vw',
-              transform: isMobile ? 'scale(0.8)' : 'none',
+              // Removed scale transformation on mobile for faster rendering
+              transform: 'none',
               transformOrigin: 'center center'
             }}
           />
