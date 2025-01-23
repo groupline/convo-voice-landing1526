@@ -44,12 +44,14 @@ export const Hero = () => {
             </div>
 
             <div className="flex-1 relative bg-gradient-to-br from-primary/20 to-primary/10 rounded-lg p-8 flex items-center justify-center">
-              <div className="text-center">
-                <h3 className="text-2xl font-semibold mb-4">Powerful AI Solutions</h3>
-                <p className="text-foreground/80">
-                  Streamline your operations with cutting-edge artificial intelligence
-                </p>
-              </div>
+              <img 
+                src="/robot.gif" 
+                alt="AI Robot Animation" 
+                className="w-64 h-64 object-contain animate-bounce-slow"
+                style={{
+                  animation: 'floating 3s ease-in-out infinite'
+                }}
+              />
             </div>
           </div>
         </Card>
