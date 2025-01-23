@@ -28,11 +28,7 @@ export const Footer = () => {
               <div className="flex items-center gap-2 text-gray-600">
                 <Mail className="w-4 h-4 text-primary" />
                 <a href="mailto:contact@surgeai.com" className="text-sm">
-                  <img 
-                    src="/email-image.png" 
-                    alt="Email Address" 
-                    className="h-4 inline-block"
-                  />
+                  contact@surgeai.com
                 </a>
               </div>
               <div className="flex items-center gap-2 text-gray-600">
