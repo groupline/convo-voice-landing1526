@@ -9,7 +9,7 @@ const About = () => {
       <main>
         <section className="pt-32 pb-16">
           <div className="container mx-auto px-4">
-            <h1 className="text-5xl font-bold text-center mb-8">About ConvoVoice</h1>
+            <h1 className="text-5xl font-bold text-center mb-8">About SurgeAi</h1>
             <p className="text-xl text-center text-foreground/80 max-w-3xl mx-auto mb-16">
               Pioneering the future of AI communication through innovative solutions and expert guidance
             </p>
@@ -22,7 +22,7 @@ const About = () => {
               <div className="space-y-6">
                 <h2 className="text-3xl font-bold">Our Mission</h2>
                 <p className="text-lg text-foreground/80">
-                  At ConvoVoice, we're dedicated to transforming businesses through the power of AI. Our mission is to make advanced AI technology accessible and practical for businesses of all sizes.
+                  At SurgeAi, we're dedicated to transforming businesses through the power of AI. Our mission is to make advanced AI technology accessible and practical for businesses of all sizes.
                 </p>
                 <Button className="bg-primary hover:bg-primary-dark text-white">
                   Book A Call

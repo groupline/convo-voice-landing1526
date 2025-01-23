@@ -27,7 +27,7 @@ export const Footer = () => {
               </div>
               <div className="flex items-center gap-2 text-gray-600">
                 <Mail className="w-4 h-4 text-primary" />
-                <a href="mailto:contact@convovoice.ai" className="text-sm">contact@convovoice.ai</a>
+                <a href="mailto:contact@surgeai.com" className="text-sm">contact@surgeai.com</a>
               </div>
               <div className="flex items-center gap-2 text-gray-600">
                 <Phone className="w-4 h-4 text-primary" />
