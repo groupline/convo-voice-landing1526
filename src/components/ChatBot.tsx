@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -17,6 +17,18 @@ export const ChatBot = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
+  useEffect(() => {
+    // Add welcome message when chat is opened
+    if (isOpen && messages.length === 0) {
+      setMessages([
+        {
+          role: 'assistant',
+          content: "Hi! I'm Michael, your AI assistant. How can I help you today?"
+        }
+      ]);
+    }
+  }, [isOpen]);
+
   const handleSend = async () => {
     if (!input.trim()) return;
 
@@ -26,17 +38,16 @@ export const ChatBot = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`
         },
         body: JSON.stringify({
-          model: "gpt-4",
-          messages: [...messages, userMessage],
-          temperature: 0.7,
-          max_tokens: 150
+          messages: [...messages, userMessage].map(msg => ({
+            role: msg.role,
+            content: msg.content
+          }))
         })
       });
 
@@ -47,7 +58,7 @@ export const ChatBot = () => {
       const data = await response.json();
       const assistantMessage = { 
         role: 'assistant' as const, 
-        content: data.choices[0].message.content 
+        content: data.generatedText 
       };
       
       setMessages(prev => [...prev, assistantMessage]);
