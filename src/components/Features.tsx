@@ -1,8 +1,8 @@
-import { Robot, Sparkles, Clock, DollarSign } from "lucide-react";
+import { Bot, Sparkles, Clock, DollarSign } from "lucide-react";
 
 const features = [
   {
-    icon: Robot,
+    icon: Bot,
     title: "AI Task Automation",
     description: "Automate repetitive tasks and workflows with intelligent AI systems",
   },
