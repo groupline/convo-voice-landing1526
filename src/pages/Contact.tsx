@@ -25,8 +25,7 @@ const Contact = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Replace this with your actual Zapier webhook URL
-    const webhookUrl = "YOUR_ZAPIER_WEBHOOK_URL";
+    const webhookUrl = "https://hooks.zapier.com/hooks/catch/21437851/2fype95/";
     
     setIsSubmitting(true);
     console.log("Submitting form data to Zapier:", formData);
