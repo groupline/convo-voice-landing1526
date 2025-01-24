@@ -31,7 +31,7 @@ export const Footer = () => {
               </div>
               <div className="flex items-center gap-2 text-gray-600">
                 <Phone className="w-4 h-4 text-primary" />
-                <a href="tel:+1234567890" className="text-sm">+1 (234) 567-890</a>
+                <a href="tel:307-201-2504" className="text-sm">307-201-2504</a>
               </div>
             </div>
           </div>

@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Logo } from "./Logo";
+import { Phone } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -12,6 +13,10 @@ export const Navbar = () => {
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Logo />
         <div className="hidden md:flex items-center gap-8">
+          <a href="tel:307-201-2504" className="flex items-center gap-2 text-foreground/80 hover:text-foreground transition-colors">
+            <Phone className="w-4 h-4" />
+            <span>307-201-2504</span>
+          </a>
           <a href="#features" className="text-foreground/80 hover:text-foreground transition-colors">
             Features
           </a>
