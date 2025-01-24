@@ -43,10 +43,10 @@ async function createBiginLead(formData: ContactFormData) {
       throw new Error(`Bigin API error: ${data.message || 'Unknown error'}`);
     }
     
-    return data;
+    return { success: true, data };
   } catch (error) {
     console.error('Error creating Bigin lead:', error);
-    throw error;
+    return { success: false, error };
   }
 }
 
@@ -111,19 +111,17 @@ Deno.serve(async (req) => {
     }
 
     // Create lead in Bigin CRM
-    try {
-      await createBiginLead(formData);
-      console.log('Successfully created lead in Bigin CRM');
-    } catch (biginError) {
-      console.error('Failed to create lead in Bigin:', biginError);
-      return new Response(
-        JSON.stringify({ error: 'Failed to create lead in CRM' }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
-      )
+    const biginResult = await createBiginLead(formData);
+    if (!biginResult.success) {
+      console.error('Bigin API error:', biginResult.error);
+      // Log the error but don't fail the submission
     }
 
     return new Response(
-      JSON.stringify({ message: 'Form submitted successfully' }),
+      JSON.stringify({ 
+        message: 'Form submitted successfully',
+        biginStatus: biginResult.success ? 'success' : 'error'
+      }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
 
