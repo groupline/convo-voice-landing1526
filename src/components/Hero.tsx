@@ -4,11 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Spotlight } from "@/components/ui/spotlight";
 import { SplineScene } from "@/components/ui/splite";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useState } from "react";
 
 export const Hero = () => {
-  const openCalendly = () => {
-    window.open('https://calendly.com/andrew-surgeai', '_blank');
-  };
+  const [showCalendly, setShowCalendly] = useState(false);
 
   return (
     <section className="pt-32 pb-24 overflow-hidden">
@@ -23,7 +23,7 @@ export const Hero = () => {
           </p>
           <div className="flex justify-center animate-fade-in">
             <Button 
-              onClick={openCalendly}
+              onClick={() => setShowCalendly(true)}
               className="bg-primary hover:bg-primary-dark text-white px-8 py-6 text-lg"
             >
               Book A Call
@@ -57,6 +57,17 @@ export const Hero = () => {
           </div>
         </Card>
       </div>
+
+      <Dialog open={showCalendly} onOpenChange={setShowCalendly}>
+        <DialogContent className="max-w-4xl h-[80vh] p-0">
+          <iframe
+            src="https://calendly.com/andrew-surgeai"
+            width="100%"
+            height="100%"
+            frameBorder="0"
+          />
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };

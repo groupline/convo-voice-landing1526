@@ -1,11 +1,11 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useState } from "react";
 
 const About = () => {
-  const openCalendly = () => {
-    window.open('https://calendly.com/andrew-surgeai', '_blank');
-  };
+  const [showCalendly, setShowCalendly] = useState(false);
 
   return (
     <div className="min-h-screen bg-background">
@@ -29,7 +29,7 @@ const About = () => {
                   At SurgeAi, we're dedicated to transforming businesses through the power of AI. Our mission is to make advanced AI technology accessible and practical for businesses of all sizes.
                 </p>
                 <Button 
-                  onClick={openCalendly}
+                  onClick={() => setShowCalendly(true)}
                   className="bg-primary hover:bg-primary-dark text-white"
                 >
                   Book A Call
@@ -74,7 +74,7 @@ const About = () => {
                 Let's discuss how our AI solutions can help your business grow and succeed in the digital age.
               </p>
               <Button 
-                onClick={openCalendly}
+                onClick={() => setShowCalendly(true)}
                 className="bg-primary hover:bg-primary-dark text-white"
               >
                 Book A Call
@@ -84,6 +84,17 @@ const About = () => {
         </section>
       </main>
       <Footer />
+
+      <Dialog open={showCalendly} onOpenChange={setShowCalendly}>
+        <DialogContent className="max-w-4xl h-[80vh] p-0">
+          <iframe
+            src="https://calendly.com/andrew-surgeai"
+            width="100%"
+            height="100%"
+            frameBorder="0"
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
