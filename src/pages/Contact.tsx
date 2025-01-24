@@ -12,16 +12,15 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    // Add the script tag for form validation
+    // Add the script tag for form
     const script = document.createElement('script');
-    script.id = 'wf_script';
-    script.src = 'https://bigin.zoho.com/crm/WebformScriptServlet?rid=b5aacd64637fe2677a2e6f437053752a15b67b80204192b6dc4db936118fec69db6f287d6cd2b90a35cee4a6b0bd4f8bgid09a9025d48f23ad441aecf5a4f5a3a9d66c74edee4bc49b999a2df91f72414d7';
+    script.id = 'formScript6623005000000502096';
+    script.src = 'https://us.bigin.online/org876950633/forms/contact-us?script=$sYG';
     document.body.appendChild(script);
 
     // Function to handle form submission response
     const handleFormResponse = () => {
       if (isSubmitting) {
-        // Add a small delay to ensure the form has been processed
         setTimeout(() => {
           toast({
             title: "Success!",
@@ -40,7 +39,7 @@ const Contact = () => {
 
     return () => {
       // Cleanup
-      const scriptElement = document.getElementById('wf_script');
+      const scriptElement = document.getElementById('formScript6623005000000502096');
       if (scriptElement) {
         document.body.removeChild(scriptElement);
       }
@@ -73,21 +72,6 @@ const Contact = () => {
     if (!isValid) return;
 
     setIsSubmitting(true);
-    
-    // Set the return URL
-    const returnUrl = window.location.origin + '/thank-you';
-    const existingReturnUrlInput = form.querySelector('input[name="returnURL"]');
-    if (existingReturnUrlInput) {
-      (existingReturnUrlInput as HTMLInputElement).value = returnUrl;
-    } else {
-      const returnUrlInput = document.createElement('input');
-      returnUrlInput.type = 'hidden';
-      returnUrlInput.name = 'returnURL';
-      returnUrlInput.value = returnUrl;
-      form.appendChild(returnUrlInput);
-    }
-    
-    // Submit the form
     form.submit();
   };
 
@@ -127,7 +111,7 @@ const Contact = () => {
             </div>
 
             <div>
-              <div className='wf-parent' id='BiginWebToRecordFormParent6623005000000502096' style={{backgroundColor: '#EAEEF2'}}>
+              <div className='wf-parent' id='BiginWebToRecordFormParent6623005000000502096'>
                 <div className='wf-wrapper' id='BiginWebToRecordFormDiv6623005000000502096'>
                   <meta name='viewport' content='width=device-width, initial-scale=1.0' />
                   <meta httpEquiv='content-type' content='text/html;charset=UTF-8' />
@@ -136,7 +120,6 @@ const Contact = () => {
                     name='BiginWebToRecordForm6623005000000502096' 
                     className='wf-form-component' 
                     data-ux-form-alignment='top' 
-                    style={{fontFamily: 'Arial', position: 'relative', fontSize: '15px'}} 
                     method='POST' 
                     encType='multipart/form-data'
                     onSubmit={handleSubmit}
@@ -146,6 +129,7 @@ const Contact = () => {
                     <input type='text' style={{display: 'none'}} name='xmIwtLD' value='b5aacd64637fe2677a2e6f437053752a15b67b80204192b6dc4db936118fec69db6f287d6cd2b90a35cee4a6b0bd4f8b' />
                     <input type='text' style={{display: 'none'}} name='actionType' value='Q29udGFjdHM=' />
                     <input type='text' style={{display: 'none'}} name='returnURL' value={window.location.origin + '/thank-you'} />
+                    
                     <div className='wf-row'>  
                       <div className='wf-label'>First Name</div>
                       <div className='wf-field'>
@@ -202,6 +186,7 @@ const Contact = () => {
                         </div>
                       </div>
                     </div>
+                    
                     <div className='wform-btn-wrap' data-ux-pos='left'>
                       <button 
                         type='submit' 
