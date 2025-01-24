@@ -18,37 +18,47 @@ const Contact = () => {
     script.src = 'https://bigin.zoho.com/crm/WebformScriptServlet?rid=b5aacd64637fe2677a2e6f437053752a15b67b80204192b6dc4db936118fec69db6f287d6cd2b90a35cee4a6b0bd4f8bgid09a9025d48f23ad441aecf5a4f5a3a9d66c74edee4bc49b999a2df91f72414d7';
     document.body.appendChild(script);
 
-    // Add event listener to the iframe to detect form submission
-    const iframe = document.getElementById('hidden6623005000000502096Frame');
-    if (iframe) {
-      iframe.addEventListener('load', () => {
-        if (isSubmitting) {
-          try {
-            const doc = (iframe as HTMLIFrameElement).contentWindow?.document;
-            if (doc?.body.textContent?.includes('success')) {
-              toast({
-                title: "Success!",
-                description: "Your message has been sent successfully.",
-              });
-              navigate('/thank-you');
-            } else {
-              toast({
-                variant: "destructive",
-                title: "Error",
-                description: "There was a problem sending your message. Please try again.",
-              });
-              setIsSubmitting(false);
-            }
-          } catch (error) {
-            // If we can't access iframe content, assume success (cross-origin restriction)
+    // Add event listener to the iframe
+    const handleIframeLoad = () => {
+      const iframe = document.getElementById('hidden6623005000000502096Frame') as HTMLIFrameElement;
+      if (iframe && isSubmitting) {
+        try {
+          const iframeContent = iframe.contentWindow?.document.body.textContent || '';
+          if (iframeContent.includes('success')) {
             toast({
               title: "Success!",
               description: "Your message has been sent successfully.",
             });
             navigate('/thank-you');
+          } else {
+            toast({
+              variant: "destructive",
+              title: "Error",
+              description: "There was a problem sending your message. Please try again.",
+            });
+            setIsSubmitting(false);
           }
+        } catch (error) {
+          // Cross-origin restrictions might prevent access to iframe content
+          // In this case, we'll assume success as the form would have been submitted
+          toast({
+            title: "Success!",
+            description: "Your message has been sent successfully.",
+          });
+          navigate('/thank-you');
         }
-      });
+      }
+    };
+
+    window.addEventListener('message', (event) => {
+      if (event.data === 'formSubmitted') {
+        handleIframeLoad();
+      }
+    });
+
+    const iframe = document.getElementById('hidden6623005000000502096Frame');
+    if (iframe) {
+      iframe.addEventListener('load', handleIframeLoad);
     }
 
     return () => {
@@ -56,6 +66,11 @@ const Contact = () => {
       if (scriptElement) {
         document.body.removeChild(scriptElement);
       }
+      const iframeElement = document.getElementById('hidden6623005000000502096Frame');
+      if (iframeElement) {
+        iframeElement.removeEventListener('load', handleIframeLoad);
+      }
+      window.removeEventListener('message', handleIframeLoad);
     };
   }, [navigate, toast, isSubmitting]);
 
@@ -82,7 +97,18 @@ const Contact = () => {
     if (!isValid) return;
 
     setIsSubmitting(true);
+    
+    // Add a hidden input for return URL
+    const returnUrlInput = document.createElement('input');
+    returnUrlInput.type = 'hidden';
+    returnUrlInput.name = 'returnURL';
+    returnUrlInput.value = window.location.origin + '/thank-you';
+    form.appendChild(returnUrlInput);
+    
     form.submit();
+    
+    // Remove the temporary return URL input
+    form.removeChild(returnUrlInput);
   };
 
   return (
