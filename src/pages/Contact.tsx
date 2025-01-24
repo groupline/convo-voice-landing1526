@@ -21,11 +21,38 @@ const Contact = () => {
     phone: "",
     company: "",
     message: "",
+    website: "", // Honeypot field
   });
+
+  // Rate limiting
+  const [lastSubmissionTime, setLastSubmissionTime] = useState<number | null>(null);
+  const SUBMISSION_TIMEOUT = 60000; // 1 minute in milliseconds
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Check honeypot field
+    if (formData.website) {
+      console.log("Spam detected via honeypot");
+      toast({
+        title: "Error",
+        description: "Form submission failed. Please try again later.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Check rate limiting
+    const now = Date.now();
+    if (lastSubmissionTime && (now - lastSubmissionTime) < SUBMISSION_TIMEOUT) {
+      toast({
+        title: "Please wait",
+        description: "You can only submit the form once per minute.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     const webhookUrl = "https://hooks.zapier.com/hooks/catch/21437851/2fype95/";
     
     setIsSubmitting(true);
@@ -46,6 +73,7 @@ const Contact = () => {
         }),
       });
 
+      setLastSubmissionTime(now);
       toast({
         title: "Success!",
         description: "Your message has been sent successfully.",
@@ -169,6 +197,20 @@ const Contact = () => {
                     value={formData.company}
                     onChange={handleChange}
                     placeholder="Your company name"
+                  />
+                </div>
+
+                {/* Honeypot field - hidden from real users */}
+                <div className="hidden">
+                  <Label htmlFor="website">Website</Label>
+                  <Input
+                    id="website"
+                    name="website"
+                    type="text"
+                    value={formData.website}
+                    onChange={handleChange}
+                    tabIndex={-1}
+                    autoComplete="off"
                   />
                 </div>
 
