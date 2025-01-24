@@ -16,7 +16,8 @@ const Map = () => {
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/light-v11',
       center: [-106.956, 44.797], // Sheridan, Wyoming coordinates
-      zoom: 15
+      zoom: 15,
+      attributionControl: true
     });
 
     // Add navigation controls
@@ -32,14 +33,28 @@ const Map = () => {
       .setLngLat([-106.956, 44.797])
       .addTo(map.current);
 
+    // Ensure the map container has a defined height
+    const resizeMap = () => {
+      if (map.current) {
+        map.current.resize();
+      }
+    };
+
+    // Initial resize
+    resizeMap();
+
+    // Add resize listener
+    window.addEventListener('resize', resizeMap);
+
     return () => {
+      window.removeEventListener('resize', resizeMap);
       map.current?.remove();
     };
   }, []);
 
   return (
-    <div className="relative w-full h-[400px] rounded-lg overflow-hidden">
-      <div ref={mapContainer} className="absolute inset-0" />
+    <div className="relative w-full h-[400px] rounded-lg overflow-hidden border border-gray-200">
+      <div ref={mapContainer} className="absolute inset-0 w-full h-full" />
     </div>
   );
 };
