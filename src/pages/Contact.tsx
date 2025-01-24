@@ -1,7 +1,7 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { ContactForm } from "@/components/contact/ContactForm";
 import { ContactInfo } from "@/components/contact/ContactInfo";
+import { HubspotForm } from "@/components/contact/HubspotForm";
 
 const Contact = () => {
   return (
@@ -12,7 +12,7 @@ const Contact = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
             <ContactInfo />
             <div className="space-y-6">
-              <ContactForm />
+              <HubspotForm />
             </div>
           </div>
         </div>
