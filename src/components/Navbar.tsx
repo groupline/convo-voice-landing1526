@@ -18,6 +18,9 @@ export const Navbar = () => {
           <a href="/about" className="text-foreground/80 hover:text-foreground transition-colors">
             About
           </a>
+          <a href="/contact" className="text-foreground/80 hover:text-foreground transition-colors">
+            Contact
+          </a>
           <Dialog>
             <DialogTrigger asChild>
               <Button variant="default" className="bg-primary hover:bg-primary-dark text-white">
