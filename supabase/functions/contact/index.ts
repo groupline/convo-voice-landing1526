@@ -14,35 +14,15 @@ interface ContactFormData {
 }
 
 async function createBiginLead(formData: ContactFormData) {
-  const biginApiKey = Deno.env.get('BIGIN_API_KEY');
+  const biginOAuthToken = Deno.env.get('Bigin01');
   
   try {
-    // First, get an access token using the API key
-    const tokenResponse = await fetch('https://accounts.zoho.com/oauth/v2/token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams({
-        'grant_type': 'refresh_token',
-        'refresh_token': biginApiKey,
-        'client_id': 'YOUR_CLIENT_ID',
-        'client_secret': 'YOUR_CLIENT_SECRET',
-      })
-    });
-
-    const tokenData = await tokenResponse.json();
-    console.log('Token response:', tokenData);
-
-    if (!tokenResponse.ok) {
-      throw new Error(`Failed to get access token: ${tokenData.error || 'Unknown error'}`);
-    }
-
-    // Now use the access token to create the lead
+    console.log('Creating lead in Bigin CRM...');
+    
     const response = await fetch('https://www.zohoapis.com/bigin/v2/Leads', {
       method: 'POST',
       headers: {
-        'Authorization': `Zoho-oauthtoken ${tokenData.access_token}`,
+        'Authorization': `Zoho-oauthtoken ${biginOAuthToken}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -136,7 +116,10 @@ Deno.serve(async (req) => {
       console.log('Successfully created lead in Bigin CRM');
     } catch (biginError) {
       console.error('Failed to create lead in Bigin:', biginError);
-      // We don't throw here to ensure the form submission is still recorded in Supabase
+      return new Response(
+        JSON.stringify({ error: 'Failed to create lead in CRM' }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
+      )
     }
 
     return new Response(
