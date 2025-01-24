@@ -13,6 +13,9 @@ export const Navbar = () => {
           <a href="/about" className="text-foreground/80 hover:text-foreground transition-colors">
             About
           </a>
+          <a href="/contact" className="text-foreground/80 hover:text-foreground transition-colors">
+            Contact
+          </a>
           <PopupButton
             url="https://calendly.com/andrew-surgeai"
             rootElement={document.getElementById("root")!}
