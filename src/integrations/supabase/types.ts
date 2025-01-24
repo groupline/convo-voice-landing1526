@@ -9,8 +9,44 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      customer_documents: {
+        Row: {
+          customer_id: string | null
+          file_name: string
+          file_path: string
+          id: string
+          uploaded_at: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          customer_id?: string | null
+          file_name: string
+          file_path: string
+          id?: string
+          uploaded_at?: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          customer_id?: string | null
+          file_name?: string
+          file_path?: string
+          id?: string
+          uploaded_at?: string
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_documents_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       customers: {
         Row: {
+          city: string | null
           company: string | null
           created_at: string
           created_by: string | null
@@ -21,10 +57,14 @@ export type Database = {
           last_name: string
           notes: string | null
           phone: string | null
+          state: string | null
           status: string | null
+          street_address: string | null
           updated_at: string
+          zip_code: string | null
         }
         Insert: {
+          city?: string | null
           company?: string | null
           created_at?: string
           created_by?: string | null
@@ -35,10 +75,14 @@ export type Database = {
           last_name: string
           notes?: string | null
           phone?: string | null
+          state?: string | null
           status?: string | null
+          street_address?: string | null
           updated_at?: string
+          zip_code?: string | null
         }
         Update: {
+          city?: string | null
           company?: string | null
           created_at?: string
           created_by?: string | null
@@ -49,8 +93,11 @@ export type Database = {
           last_name?: string
           notes?: string | null
           phone?: string | null
+          state?: string | null
           status?: string | null
+          street_address?: string | null
           updated_at?: string
+          zip_code?: string | null
         }
         Relationships: []
       }
