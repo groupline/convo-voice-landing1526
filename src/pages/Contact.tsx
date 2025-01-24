@@ -31,7 +31,6 @@ export default function Contact() {
         description: "Your message has been sent successfully.",
       });
 
-      // Reset form
       event.currentTarget.reset();
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -46,89 +45,81 @@ export default function Contact() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className='wf-parent' id='BiginWebToRecordFormParent6623005000000502096' style={{backgroundColor: '#EAEEF2'}}>
-        <div className='wf-wrapper' id='BiginWebToRecordFormDiv6623005000000502096'>
+    <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-white rounded-lg shadow-md overflow-hidden">
           <form 
-            id='BiginWebToRecordForm6623005000000502096' 
-            className='wf-form-component' 
-            data-ux-form-alignment='top' 
-            style={{fontFamily: 'Arial', position: 'relative', fontSize: '15px'}}
+            className="p-8 space-y-6"
             onSubmit={handleSubmit}
           >
-            <div className='wf-header'>Contact Us</div>
-            <div id='elementDiv6623005000000502096' className='wf-form-wrapper'>
-              <div className='wf-sec-wrap'>
-                <div className='wf-sec-head'>
-                  <div className='wf-sec-title'>Contact Information</div>
-                </div>
-                <div className='wf-row'>  
-                  <div className='wf-label'>Last Name</div>
-                  <div className='wf-field wf-field-mandatory'>
-                    <div className='wf-field-inner'>
-                      <input 
-                        name='Last Name' 
-                        maxLength={80} 
-                        type='text' 
-                        className='wf-field-item wf-field-input' 
-                        required 
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className='wf-row'>  
-                  <div className='wf-label'>Email</div>
-                  <div className='wf-field wf-field-mandatory'>
-                    <div className='wf-field-inner'>
-                      <input 
-                        name='Email' 
-                        type='email' 
-                        maxLength={100} 
-                        className='wf-field-item wf-field-input'
-                        required 
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className='wf-row'>  
-                  <div className='wf-label'>Phone</div>
-                  <div className='wf-field'>
-                    <div className='wf-field-inner'>
-                      <input 
-                        name='Phone' 
-                        type='tel' 
-                        maxLength={50} 
-                        className='wf-field-item wf-field-input'
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className='wf-row'>  
-                  <div className='wf-label'>How Can We Help?</div>
-                  <div className='wf-field wf-field-mandatory'>
-                    <div className='wf-field-inner'>
-                      <textarea 
-                        name='Description' 
-                        maxLength={32000} 
-                        className='wf-field-item wf-field-input' 
-                        style={{resize: 'none'}}
-                        required
-                      />
-                    </div>
-                  </div>
-                </div>
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold text-gray-900">Contact Us</h2>
+              <p className="mt-2 text-sm text-gray-600">
+                We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+              </p>
+            </div>
+
+            <div className="space-y-6">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  name="Last Name"
+                  id="name"
+                  required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+                />
               </div>
-              <div className='wform-btn-wrap' data-ux-pos='left'>
-                <button 
-                  type='submit' 
-                  className='wf-btn' 
-                  data-ux-btn-type='default' 
-                  style={{backgroundColor: '#1980d8', color: '#fff', border: '1px solid #1980d8', width: 'auto'}}
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? 'Sending...' : 'Submit'}
-                </button>
+
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  name="Email"
+                  id="email"
+                  required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+                />
               </div>
+
+              <div>
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                  Phone Number
+                </label>
+                <input
+                  type="tel"
+                  name="Phone"
+                  id="phone"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="message" className="block text-sm font-medium text-gray-700">
+                  Message
+                </label>
+                <textarea
+                  name="Description"
+                  id="message"
+                  rows={4}
+                  required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+                />
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+              >
+                {isSubmitting ? 'Sending...' : 'Send Message'}
+              </button>
             </div>
           </form>
         </div>
