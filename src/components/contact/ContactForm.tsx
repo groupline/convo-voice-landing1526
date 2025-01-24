@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -60,13 +61,29 @@ export const ContactForm = () => {
       return;
     }
 
-    const webhookUrl = "https://hooks.zapier.com/hooks/catch/21437851/2fype95/";
-    
     setIsSubmitting(true);
-    console.log("Submitting form data to Zapier:", formData);
+    console.log("Submitting form data:", formData);
 
     try {
-      const response = await fetch(webhookUrl, {
+      // Save to Supabase customers table
+      const { error: supabaseError } = await supabase
+        .from('customers')
+        .insert({
+          first_name: formData.firstName,
+          last_name: formData.lastName,
+          email: formData.email,
+          phone: formData.phone,
+          company: formData.company,
+          notes: formData.message,
+          source: 'contact_form',
+          status: 'new',
+        });
+
+      if (supabaseError) throw supabaseError;
+
+      // Also send to Zapier webhook for existing integration
+      const webhookUrl = "https://hooks.zapier.com/hooks/catch/21437851/2fype95/";
+      await fetch(webhookUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -74,7 +91,7 @@ export const ContactForm = () => {
         mode: "no-cors",
         body: JSON.stringify({
           ...formData,
-          name: `${formData.firstName} ${formData.lastName}`, // Combine first and last name for Zapier
+          name: `${formData.firstName} ${formData.lastName}`,
           timestamp: new Date().toISOString(),
           source: window.location.origin,
         }),
