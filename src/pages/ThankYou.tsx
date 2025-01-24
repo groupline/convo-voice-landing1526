@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Link } from "react-router-dom";
-import { CheckCircle, Calendar } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import { PopupButton } from "react-calendly";
 
 const ThankYou = () => {
@@ -29,9 +29,7 @@ const ThankYou = () => {
               rootElement={document.getElementById("root")!}
               text="Book a Call"
               className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-11 rounded-md px-8 bg-primary text-primary-foreground hover:bg-primary/90"
-            >
-              Book a Call
-            </PopupButton>
+            />
           </div>
         </div>
       </div>
