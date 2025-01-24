@@ -17,7 +17,8 @@ import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useRef, useState } from "react";
 
-const RECAPTCHA_SITE_KEY = "6LfTOFApAAAAAIt8oQWuUH_7dgqvXGhHvzqxzI4C";
+// Updated reCAPTCHA site key for the correct domain
+const RECAPTCHA_SITE_KEY = "6LfTOFApAAAAANUc8rXn9vV1ksGXWyqRypH1jK7M";
 const BIGIN_FORM_URL = "https://bigin.zoho.com/crm/WebformScriptServlet";
 
 const formSchema = z.object({
