@@ -15,16 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Mail, Phone, User } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { useEffect, useRef } from "react";
-
-declare global {
-  interface Window {
-    grecaptcha: {
-      ready: (callback: () => void) => void;
-      execute: (siteKey: string, options: { action: string }) => Promise<string>;
-    };
-  }
-}
+import { useEffect, useRef, useState } from "react";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -39,6 +30,8 @@ const RECAPTCHA_SITE_KEY = "6LfTOFApAAAAAIt8oQWuUH_7dgqvXGhHvzqxzI4C";
 export default function Contact() {
   const { toast } = useToast();
   const recaptchaLoadedRef = useRef(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -62,15 +55,20 @@ export default function Contact() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (values.honeypot) {
-      // If honeypot is filled, silently reject the submission
       return;
     }
 
+    setIsSubmitting(true);
     try {
+      console.log('Starting form submission process');
+      
       // Get reCAPTCHA token
+      console.log('Requesting reCAPTCHA token');
       const token = await window.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'submit' });
+      console.log('Received reCAPTCHA token');
 
       // Submit form to edge function
+      console.log('Submitting to edge function');
       const { data, error } = await supabase.functions.invoke('contact', {
         body: JSON.stringify({
           ...values,
@@ -78,22 +76,35 @@ export default function Contact() {
         }),
       });
 
+      console.log('Edge function response:', { data, error });
+
       if (error) {
         throw error;
       }
 
-      toast({
-        title: "Message sent!",
-        description: "We'll get back to you as soon as possible.",
-      });
+      if (data.biginError) {
+        console.warn('Bigin CRM integration error:', data.biginError);
+        toast({
+          title: "Form submitted",
+          description: "Your message was received, but there was an issue with our CRM. Our team has been notified.",
+        });
+      } else {
+        toast({
+          title: "Message sent!",
+          description: "We'll get back to you as soon as possible.",
+        });
+      }
       
       form.reset();
     } catch (error: any) {
+      console.error('Form submission error:', error);
       toast({
         title: "Error",
         description: error.message || "Failed to send message. Please try again later.",
         variant: "destructive",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -111,7 +122,6 @@ export default function Contact() {
           <div className="bg-white rounded-2xl shadow-lg p-8">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                {/* Honeypot field - hidden from users but visible to bots */}
                 <div className="hidden">
                   <input
                     type="text"
@@ -191,8 +201,8 @@ export default function Contact() {
                   )}
                 />
 
-                <Button type="submit" className="w-full">
-                  Send Message
+                <Button type="submit" className="w-full" disabled={isSubmitting}>
+                  {isSubmitting ? "Sending..." : "Send Message"}
                 </Button>
               </form>
             </Form>
