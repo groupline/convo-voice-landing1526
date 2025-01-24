@@ -1,5 +1,5 @@
+import { Button } from "@/components/ui/button";
 import { Logo } from "./Logo";
-import { PopupButton } from "react-calendly";
 
 export const Navbar = () => {
   return (
@@ -13,15 +13,9 @@ export const Navbar = () => {
           <a href="/about" className="text-foreground/80 hover:text-foreground transition-colors">
             About
           </a>
-          <a href="/contact" className="text-foreground/80 hover:text-foreground transition-colors">
-            Contact
-          </a>
-          <PopupButton
-            url="https://calendly.com/andrew-surgeai"
-            rootElement={document.getElementById("root")!}
-            text="Book A Call"
-            className="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-md"
-          />
+          <Button variant="default" className="bg-primary hover:bg-primary-dark text-white">
+            Book A Call
+          </Button>
         </div>
       </div>
     </nav>

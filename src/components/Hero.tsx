@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Spotlight } from "@/components/ui/spotlight";
 import { SplineScene } from "@/components/ui/splite";
-import { PopupButton } from "react-calendly";
 
 export const Hero = () => {
   return (
@@ -19,12 +18,9 @@ export const Hero = () => {
             Empower your business with intelligent AI systems that generate leads autonomously and automate everyday tasks, saving you time and money
           </p>
           <div className="flex justify-center animate-fade-in">
-            <PopupButton
-              url="https://calendly.com/andrew-surgeai"
-              rootElement={document.getElementById("root")!}
-              text="Book A Call"
-              className="bg-primary hover:bg-primary-dark text-white px-8 py-6 text-lg rounded-md"
-            />
+            <Button className="bg-primary hover:bg-primary-dark text-white px-8 py-6 text-lg">
+              Book A Call
+            </Button>
           </div>
         </div>
 

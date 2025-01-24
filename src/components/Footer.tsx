@@ -27,9 +27,7 @@ export const Footer = () => {
               </div>
               <div className="flex items-center gap-2 text-gray-600">
                 <Mail className="w-4 h-4 text-primary" />
-                <a href="mailto:contact@surgeai.com" className="text-sm">
-                  contact@surgeai.com
-                </a>
+                <a href="mailto:contact@surgeai.com" className="text-sm">contact@surgeai.com</a>
               </div>
               <div className="flex items-center gap-2 text-gray-600">
                 <Phone className="w-4 h-4 text-primary" />
@@ -43,8 +41,9 @@ export const Footer = () => {
             <h3 className="font-semibold text-base">Quick Links</h3>
             <div className="space-y-2">
               <div><a href="#features" className="text-sm text-gray-600 hover:text-primary">Features</a></div>
-              <div><a href="/about" className="text-sm text-gray-600 hover:text-primary">About Us</a></div>
-              <div><a href="/contact" className="text-sm text-gray-600 hover:text-primary">Contact</a></div>
+              <div><a href="#pricing" className="text-sm text-gray-600 hover:text-primary">Pricing</a></div>
+              <div><a href="#about" className="text-sm text-gray-600 hover:text-primary">About Us</a></div>
+              <div><a href="#blog" className="text-sm text-gray-600 hover:text-primary">Blog</a></div>
             </div>
           </div>
 
