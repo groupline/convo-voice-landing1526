@@ -31,6 +31,7 @@ export default function Contact() {
   const { toast } = useToast();
   const recaptchaLoadedRef = useRef(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [recaptchaReady, setRecaptchaReady] = useState(false);
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -48,6 +49,11 @@ export default function Contact() {
       const script = document.createElement("script");
       script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
       script.async = true;
+      script.onload = () => {
+        window.grecaptcha?.ready(() => {
+          setRecaptchaReady(true);
+        });
+      };
       document.head.appendChild(script);
       recaptchaLoadedRef.current = true;
     }
@@ -55,6 +61,15 @@ export default function Contact() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (values.honeypot) {
+      return;
+    }
+
+    if (!recaptchaReady) {
+      toast({
+        title: "Error",
+        description: "Please wait for reCAPTCHA to load",
+        variant: "destructive",
+      });
       return;
     }
 
