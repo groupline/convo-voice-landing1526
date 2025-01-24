@@ -65,6 +65,7 @@ export type Database = {
           status: string | null
           street_address: string | null
           updated_at: string
+          website: string | null
           zip_code: string | null
         }
         Insert: {
@@ -87,6 +88,7 @@ export type Database = {
           status?: string | null
           street_address?: string | null
           updated_at?: string
+          website?: string | null
           zip_code?: string | null
         }
         Update: {
@@ -109,6 +111,7 @@ export type Database = {
           status?: string | null
           street_address?: string | null
           updated_at?: string
+          website?: string | null
           zip_code?: string | null
         }
         Relationships: []

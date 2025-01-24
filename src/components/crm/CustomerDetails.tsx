@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { FileText, Upload, Plus } from 'lucide-react';
+import { FileText, Upload, Plus, Globe } from 'lucide-react';
 import type { Customer } from '@/types/customer';
 import type { CustomerDocument } from '@/types/customer-document';
 
@@ -57,6 +57,15 @@ export const CustomerDetails = ({
             value={customer.company || ''}
             readOnly
           />
+
+          <div className="flex items-center gap-2">
+            <Globe className="w-4 h-4 text-gray-500" />
+            <Input
+              placeholder="Website"
+              value={customer.website || ''}
+              readOnly
+            />
+          </div>
         </CardContent>
       </Card>
 
