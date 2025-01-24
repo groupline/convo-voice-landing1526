@@ -20,7 +20,7 @@ export const Hero = () => {
           </p>
           <div className="flex justify-center animate-fade-in">
             <PopupButton
-              url="https://calendly.com/YOUR_USERNAME"
+              url="https://calendly.com/gavelworks11"
               rootElement={document.getElementById("root")!}
               text="Book A Call"
               className="bg-primary hover:bg-primary-dark text-white px-8 py-6 text-lg rounded-md"
