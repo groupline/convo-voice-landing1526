@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useAuth } from "@/components/AuthProvider";
 import {
   Form,
   FormControl,
@@ -26,6 +27,7 @@ type FormData = Omit<Customer, 'id' | 'lastContact'>;
 
 export const AddContactForm = ({ onSuccess }: { onSuccess: () => void }) => {
   const { toast } = useToast();
+  const { session } = useAuth();
   const form = useForm<FormData>();
 
   const onSubmit = async (data: FormData) => {
@@ -44,12 +46,16 @@ export const AddContactForm = ({ onSuccess }: { onSuccess: () => void }) => {
         notes: data.notes,
         lifecycle_stage: data.lifecycle_stage,
         deal_value: data.deal_value,
-        source: data.source,
+        source: session?.user?.id ? data.source : 'contact_form',
         owner: data.owner,
-        website: data.website
+        website: data.website,
+        created_by: session?.user?.id || null
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error submitting form:', error);
+        throw error;
+      }
 
       toast({
         title: "Success",
@@ -59,9 +65,10 @@ export const AddContactForm = ({ onSuccess }: { onSuccess: () => void }) => {
       form.reset();
       onSuccess();
     } catch (error: any) {
+      console.error('Error submitting form:', error);
       toast({
         title: "Error",
-        description: "Failed to add contact",
+        description: "Failed to add contact: " + error.message,
         variant: "destructive",
       });
     }
@@ -141,116 +148,48 @@ export const AddContactForm = ({ onSuccess }: { onSuccess: () => void }) => {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="website"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Website</FormLabel>
-              <FormControl>
-                <Input type="url" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <div className="space-y-4">
-          <FormField
-            control={form.control}
-            name="street_address"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Street Address</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <div className="grid grid-cols-3 gap-4">
+        {session?.user?.id && (
+          <>
             <FormField
               control={form.control}
-              name="city"
+              name="lifecycle_stage"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>City</FormLabel>
+                  <FormLabel>Lifecycle Stage</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select stage" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="lead">Lead</SelectItem>
+                      <SelectItem value="marketing_qualified_lead">Marketing Qualified Lead</SelectItem>
+                      <SelectItem value="sales_qualified_lead">Sales Qualified Lead</SelectItem>
+                      <SelectItem value="opportunity">Opportunity</SelectItem>
+                      <SelectItem value="customer">Customer</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="notes"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Notes</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Textarea {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="state"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>State</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="zip_code"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>ZIP Code</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-        </div>
-
-        <FormField
-          control={form.control}
-          name="lifecycle_stage"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Lifecycle Stage</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select stage" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="lead">Lead</SelectItem>
-                  <SelectItem value="marketing_qualified_lead">Marketing Qualified Lead</SelectItem>
-                  <SelectItem value="sales_qualified_lead">Sales Qualified Lead</SelectItem>
-                  <SelectItem value="opportunity">Opportunity</SelectItem>
-                  <SelectItem value="customer">Customer</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="notes"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Notes</FormLabel>
-              <FormControl>
-                <Textarea {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          </>
+        )}
 
         <Button type="submit">Add Contact</Button>
       </form>
