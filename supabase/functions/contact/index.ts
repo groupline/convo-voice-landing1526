@@ -10,7 +10,6 @@ interface ContactFormData {
   email: string;
   phone: string;
   message: string;
-  captchaToken: string;
 }
 
 async function createBiginLead(formData: ContactFormData) {
@@ -71,25 +70,6 @@ Deno.serve(async (req) => {
     console.log('Processing new form submission');
     const formData: ContactFormData = await req.json();
     const clientIP = req.headers.get('x-forwarded-for') || 'unknown';
-
-    // Verify reCAPTCHA token
-    console.log('Verifying reCAPTCHA token');
-    const recaptchaResponse = await fetch('https://www.google.com/recaptcha/api/siteverify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: `secret=${Deno.env.get('captcha')}&response=${formData.captchaToken}`,
-    });
-
-    const recaptchaData = await recaptchaResponse.json();
-    console.log('reCAPTCHA verification result:', recaptchaData);
-    
-    if (!recaptchaData.success) {
-      console.error('reCAPTCHA verification failed:', recaptchaData);
-      return new Response(
-        JSON.stringify({ error: 'Invalid captcha' }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
-      );
-    }
 
     // Check rate limiting (3 submissions per email per hour)
     console.log('Checking rate limiting for email:', formData.email);
