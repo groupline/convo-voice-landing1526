@@ -2,12 +2,6 @@ export default function Contact() {
   return (
     <div className="min-h-screen bg-background">
       <div id="formDiv6623005000000502096" className="bg-white">
-        <iframe 
-          id='hidden6623005000000502096Frame' 
-          name='hidden6623005000000502096Frame' 
-          style={{display: 'none'}} 
-          className='iframe-container'
-        />
         <div 
           className='wf-parent' 
           id='BiginWebToRecordFormParent6623005000000502096' 
