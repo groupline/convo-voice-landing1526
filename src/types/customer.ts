@@ -16,4 +16,5 @@ export interface Customer {
   deal_value?: number;
   source?: string;
   owner?: string;
+  website?: string;
 }
