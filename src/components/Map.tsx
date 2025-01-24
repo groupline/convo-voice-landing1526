@@ -4,7 +4,7 @@ const Map = () => {
   return (
     <div className="relative w-full h-[400px] rounded-lg overflow-hidden border border-gray-200">
       <img 
-        src="https://images.unsplash.com/photo-1433086966358-54859d0ed716"
+        src="https://images.unsplash.com/photo-1482938289607-e9573fc25ebb"
         alt="Map of 1309 Coffeen Avenue STE 1200, Sheridan Wyoming 82801"
         className="absolute inset-0 w-full h-full object-cover"
       />
