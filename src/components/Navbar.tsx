@@ -14,7 +14,7 @@ export const Navbar = () => {
             About
           </a>
           <PopupButton
-            url="https://calendly.com/gavelworks11"
+            url="https://calendly.com/andrew-surgeai"
             rootElement={document.getElementById("root")!}
             text="Book A Call"
             className="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-md"
