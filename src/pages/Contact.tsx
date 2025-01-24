@@ -1,216 +1,136 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Mail, Phone, User, Building2 } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
-
-const BIGIN_FORM_URL = "https://bigin.zoho.com/crm/WebformScriptServlet";
-
-const formSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  company: z.string().min(2, "Company name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
-  phone: z.string().min(10, "Phone number must be at least 10 digits"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
-  honeypot: z.string().max(0, "This field should be empty"),
-});
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 export default function Contact() {
-  const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      company: "",
-      email: "",
-      phone: "",
-      message: "",
-      honeypot: "",
-    },
-  });
+  const { toast } = useToast();
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (values.honeypot) {
-      return;
-    }
-
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setIsSubmitting(true);
+
     try {
-      // Submit to Supabase edge function
-      const { data, error } = await supabase.functions.invoke('contact', {
-        body: JSON.stringify(values),
+      const formData = {
+        name: (event.currentTarget.elements.namedItem('Last Name') as HTMLInputElement).value,
+        email: (event.currentTarget.elements.namedItem('Email') as HTMLInputElement).value,
+        phone: (event.currentTarget.elements.namedItem('Phone') as HTMLInputElement).value,
+        message: (event.currentTarget.elements.namedItem('Description') as HTMLTextAreaElement).value,
+      };
+
+      const { error } = await supabase.functions.invoke('contact', {
+        body: JSON.stringify(formData),
       });
 
       if (error) {
         throw error;
       }
 
-      // Submit to Bigin form
-      const biginFormData = new FormData();
-      biginFormData.append('Last Name', values.name);
-      biginFormData.append('Accounts.Account Name', values.company);
-      biginFormData.append('Email', values.email);
-      biginFormData.append('Phone', values.phone);
-      biginFormData.append('Description', values.message);
-
-      const biginResponse = await fetch(BIGIN_FORM_URL, {
-        method: 'POST',
-        body: biginFormData,
-      });
-
-      if (!biginResponse.ok) {
-        console.warn('Bigin form submission error:', await biginResponse.text());
-      }
-
       toast({
-        title: "Message sent!",
-        description: "We'll get back to you as soon as possible.",
+        title: "Success!",
+        description: "Your message has been sent successfully.",
       });
-      
-      form.reset();
-    } catch (error: any) {
-      console.error('Form submission error:', error);
+
+      // Reset form
+      event.currentTarget.reset();
+    } catch (error) {
+      console.error('Error submitting form:', error);
       toast({
         title: "Error",
-        description: error.message || "Failed to send message. Please try again later.",
+        description: "Failed to send message. Please try again later.",
         variant: "destructive",
       });
     } finally {
       setIsSubmitting(false);
     }
-  }
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
-      <div className="container mx-auto px-4 py-16">
-        <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold tracking-tight mb-4">Contact Us</h1>
-            <p className="text-lg text-gray-600">
-              Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
-            </p>
-          </div>
-
-          <div className="bg-white rounded-2xl shadow-lg p-8">
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <div className="hidden">
-                  <input
-                    type="text"
-                    name="honeypot"
-                    tabIndex={-1}
-                    autoComplete="off"
-                    {...form.register("honeypot")}
-                  />
+    <div className="container mx-auto px-4 py-8">
+      <div className='wf-parent' id='BiginWebToRecordFormParent6623005000000502096' style={{backgroundColor: '#EAEEF2'}}>
+        <div className='wf-wrapper' id='BiginWebToRecordFormDiv6623005000000502096'>
+          <form 
+            id='BiginWebToRecordForm6623005000000502096' 
+            className='wf-form-component' 
+            data-ux-form-alignment='top' 
+            style={{fontFamily: 'Arial', position: 'relative', fontSize: '15px'}}
+            onSubmit={handleSubmit}
+          >
+            <div className='wf-header'>Contact Us</div>
+            <div id='elementDiv6623005000000502096' className='wf-form-wrapper'>
+              <div className='wf-sec-wrap'>
+                <div className='wf-sec-head'>
+                  <div className='wf-sec-title'>Contact Information</div>
                 </div>
-
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="flex items-center gap-2">
-                        <User className="h-4 w-4" />
-                        Name
-                      </FormLabel>
-                      <FormControl>
-                        <Input placeholder="John Doe" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="company"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="flex items-center gap-2">
-                        <Building2 className="h-4 w-4" />
-                        Company
-                      </FormLabel>
-                      <FormControl>
-                        <Input placeholder="Acme Inc." {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="flex items-center gap-2">
-                        <Mail className="h-4 w-4" />
-                        Email
-                      </FormLabel>
-                      <FormControl>
-                        <Input type="email" placeholder="john@example.com" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="phone"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="flex items-center gap-2">
-                        <Phone className="h-4 w-4" />
-                        Phone
-                      </FormLabel>
-                      <FormControl>
-                        <Input type="tel" placeholder="+1 (555) 000-0000" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="message"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>How Can We Help?</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Tell us about your needs..."
-                          className="min-h-[120px]"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <Button type="submit" className="w-full" disabled={isSubmitting}>
-                  {isSubmitting ? "Sending..." : "Send Message"}
-                </Button>
-              </form>
-            </Form>
-          </div>
+                <div className='wf-row'>  
+                  <div className='wf-label'>Last Name</div>
+                  <div className='wf-field wf-field-mandatory'>
+                    <div className='wf-field-inner'>
+                      <input 
+                        name='Last Name' 
+                        maxLength={80} 
+                        type='text' 
+                        className='wf-field-item wf-field-input' 
+                        required 
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className='wf-row'>  
+                  <div className='wf-label'>Email</div>
+                  <div className='wf-field wf-field-mandatory'>
+                    <div className='wf-field-inner'>
+                      <input 
+                        name='Email' 
+                        type='email' 
+                        maxLength={100} 
+                        className='wf-field-item wf-field-input'
+                        required 
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className='wf-row'>  
+                  <div className='wf-label'>Phone</div>
+                  <div className='wf-field'>
+                    <div className='wf-field-inner'>
+                      <input 
+                        name='Phone' 
+                        type='tel' 
+                        maxLength={50} 
+                        className='wf-field-item wf-field-input'
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className='wf-row'>  
+                  <div className='wf-label'>How Can We Help?</div>
+                  <div className='wf-field wf-field-mandatory'>
+                    <div className='wf-field-inner'>
+                      <textarea 
+                        name='Description' 
+                        maxLength={32000} 
+                        className='wf-field-item wf-field-input' 
+                        style={{resize: 'none'}}
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className='wform-btn-wrap' data-ux-pos='left'>
+                <button 
+                  type='submit' 
+                  className='wf-btn' 
+                  data-ux-btn-type='default' 
+                  style={{backgroundColor: '#1980d8', color: '#fff', border: '1px solid #1980d8', width: 'auto'}}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Sending...' : 'Submit'}
+                </button>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>

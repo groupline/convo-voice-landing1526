@@ -39,15 +39,15 @@ async function createBiginLead(formData: ContactFormData) {
       })
     });
 
-    const data = await response.json();
-    console.log('Bigin API Raw Response:', JSON.stringify(data));
-    
     if (!response.ok) {
+      const data = await response.json();
       console.error('Bigin API error status:', response.status);
       console.error('Bigin API error details:', data);
       throw new Error(`Bigin API error: ${data.message || 'Unknown error'}`);
     }
-    
+
+    const data = await response.json();
+    console.log('Bigin API Response:', JSON.stringify(data));
     return { success: true, data };
   } catch (error) {
     console.error('Error creating Bigin lead:', error);
