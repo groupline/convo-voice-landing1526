@@ -20,43 +20,57 @@ export const CRM = () => {
 
   useEffect(() => {
     if (session?.user?.id) {
+      console.log('Fetching customers for user:', session.user.id);
       fetchCustomers();
+    } else {
+      console.log('No authenticated user found');
+      setCustomers([]);
     }
   }, [session?.user?.id]);
 
   const fetchCustomers = async () => {
+    if (!session?.user?.id) {
+      console.log('Cannot fetch customers: No authenticated user');
+      return;
+    }
+
     try {
+      console.log('Making request to fetch customers');
       const { data, error } = await supabase
         .from('customers')
         .select('*')
-        .eq('created_by', session?.user?.id);
+        .eq('created_by', session.user.id);
       
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error fetching customers:', error);
+        throw error;
+      }
 
+      console.log('Received customers data:', data);
       const mappedCustomers: Customer[] = (data || []).map(customer => ({
         id: customer.id,
         firstName: customer.first_name,
         lastName: customer.last_name,
         email: customer.email,
         phone: customer.phone || '',
-        company: customer.company,
-        lastContact: customer.last_contact || '',
+        company: customer.company || '',
+        lastContact: customer.last_contact || new Date().toISOString(),
         status: customer.status || 'new',
-        street_address: customer.street_address,
-        city: customer.city,
-        state: customer.state,
-        zip_code: customer.zip_code,
-        notes: customer.notes,
+        street_address: customer.street_address || '',
+        city: customer.city || '',
+        state: customer.state || '',
+        zip_code: customer.zip_code || '',
+        notes: customer.notes || '',
         lifecycle_stage: (customer.lifecycle_stage as Customer['lifecycle_stage']) || 'lead',
-        deal_value: customer.deal_value,
-        source: customer.source,
-        owner: customer.owner,
-        website: customer.website
+        deal_value: customer.deal_value || 0,
+        source: customer.source || '',
+        owner: customer.owner || '',
+        website: customer.website || ''
       }));
       
       setCustomers(mappedCustomers);
     } catch (error: any) {
-      console.error('Error fetching customers:', error);
+      console.error('Error in fetchCustomers:', error);
       toast({
         title: "Error",
         description: "Failed to fetch customers: " + error.message,
@@ -66,17 +80,28 @@ export const CRM = () => {
   };
 
   const fetchCustomerDocuments = async (customerId: string) => {
+    if (!session?.user?.id) {
+      console.log('Cannot fetch documents: No authenticated user');
+      return;
+    }
+
     try {
+      console.log('Fetching documents for customer:', customerId);
       const { data, error } = await supabase
         .from('customer_documents')
         .select('*')
         .eq('customer_id', customerId)
-        .eq('uploaded_by', session?.user?.id);
+        .eq('uploaded_by', session.user.id);
       
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error fetching documents:', error);
+        throw error;
+      }
+
+      console.log('Received documents:', data);
       setDocuments(data || []);
     } catch (error: any) {
-      console.error('Error fetching documents:', error);
+      console.error('Error in fetchCustomerDocuments:', error);
       toast({
         title: "Error",
         description: "Failed to fetch customer documents: " + error.message,
@@ -86,20 +111,29 @@ export const CRM = () => {
   };
 
   const handleFileUpload = async (file: File) => {
-    if (!selectedCustomer || !session?.user?.id) return;
+    if (!selectedCustomer || !session?.user?.id) {
+      console.log('Cannot upload file: Missing customer or user');
+      return;
+    }
 
     try {
       setIsLoading(true);
+      console.log('Starting file upload for customer:', selectedCustomer.id);
       
       const fileExt = file.name.split('.').pop();
       const filePath = `${selectedCustomer.id}/${Math.random()}.${fileExt}`;
       
+      console.log('Uploading file to storage:', filePath);
       const { error: uploadError } = await supabase.storage
         .from('customer_documents')
         .upload(filePath, file);
 
-      if (uploadError) throw uploadError;
+      if (uploadError) {
+        console.error('Storage upload error:', uploadError);
+        throw uploadError;
+      }
 
+      console.log('File uploaded successfully, creating database record');
       const { error: dbError } = await supabase
         .from('customer_documents')
         .insert({
@@ -109,8 +143,12 @@ export const CRM = () => {
           uploaded_by: session.user.id
         });
 
-      if (dbError) throw dbError;
+      if (dbError) {
+        console.error('Database insert error:', dbError);
+        throw dbError;
+      }
 
+      console.log('Document record created successfully');
       toast({
         title: "Success",
         description: "Document uploaded successfully",
@@ -118,7 +156,7 @@ export const CRM = () => {
 
       await fetchCustomerDocuments(selectedCustomer.id);
     } catch (error: any) {
-      console.error('Error uploading document:', error);
+      console.error('Error in handleFileUpload:', error);
       toast({
         title: "Error",
         description: "Failed to upload document: " + error.message,
@@ -130,6 +168,7 @@ export const CRM = () => {
   };
 
   const handleCustomerClick = async (customer: Customer) => {
+    console.log('Selected customer:', customer);
     setSelectedCustomer(customer);
     await fetchCustomerDocuments(customer.id);
   };
