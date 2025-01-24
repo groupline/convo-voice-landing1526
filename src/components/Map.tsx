@@ -12,7 +12,7 @@ const Map = () => {
     <div className="relative w-full h-[400px] rounded-lg overflow-hidden border border-gray-200">
       <iframe 
         src={openStreetMapUrl}
-        alt="Map of 1309 Coffeen Avenue STE 1200, Sheridan Wyoming 82801"
+        title="Map of 1309 Coffeen Avenue STE 1200, Sheridan Wyoming 82801"
         className="absolute inset-0 w-full h-full"
         style={{ border: 0 }}
         loading="lazy"
