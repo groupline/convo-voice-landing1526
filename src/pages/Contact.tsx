@@ -5,61 +5,76 @@ import { useEffect, useState } from "react";
 import Map from "@/components/Map";
 import { MapPin, Mail, Phone } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-
-declare global {
-  interface Window {
-    hbspt?: {
-      forms: {
-        create: (config: {
-          region: string;
-          portalId: string;
-          formId: string;
-          target: string;
-          onFormSubmitted?: (form: any) => void;
-        }) => void;
-      };
-    };
-  }
-}
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 
 const Contact = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [webhookUrl, setWebhookUrl] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
 
-  useEffect(() => {
-    // Add HubSpot form script
-    const script = document.createElement('script');
-    script.src = 'https://js.hsforms.net/forms/v2.js';
-    script.async = true;
-    script.onload = () => {
-      if (window.hbspt) {
-        window.hbspt.forms.create({
-          region: "na1",
-          portalId: "49067989",
-          formId: "0ba59bc7-6b42-4986-8b6a-ba84da9a8283",
-          target: "#hubspotForm",
-          onFormSubmitted: () => {
-            setIsSubmitting(false);
-            toast({
-              title: "Success!",
-              description: "Your message has been sent successfully.",
-            });
-            navigate('/thank-you');
-          }
-        });
-      }
-    };
-    document.body.appendChild(script);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!webhookUrl) {
+      toast({
+        title: "Error",
+        description: "Please set up your Zapier webhook URL",
+        variant: "destructive",
+      });
+      return;
+    }
 
-    return () => {
-      // Cleanup
-      const scriptElement = document.querySelector('script[src*="hsforms.net"]');
-      if (scriptElement) {
-        document.body.removeChild(scriptElement);
-      }
-    };
-  }, [navigate, toast]);
+    setIsSubmitting(true);
+    console.log("Submitting form data to Zapier:", formData);
+
+    try {
+      const response = await fetch(webhookUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        mode: "no-cors",
+        body: JSON.stringify({
+          ...formData,
+          timestamp: new Date().toISOString(),
+          source: window.location.origin,
+        }),
+      });
+
+      toast({
+        title: "Success!",
+        description: "Your message has been sent successfully.",
+      });
+      navigate('/thank-you');
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast({
+        title: "Error",
+        description: "Failed to submit the form. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -96,8 +111,77 @@ const Contact = () => {
               <Map />
             </div>
 
-            <div>
-              <div id="hubspotForm" />
+            <div className="space-y-6">
+              <div className="space-y-4">
+                <Label htmlFor="webhookUrl">Zapier Webhook URL</Label>
+                <Input
+                  id="webhookUrl"
+                  type="text"
+                  value={webhookUrl}
+                  onChange={(e) => setWebhookUrl(e.target.value)}
+                  placeholder="Enter your Zapier webhook URL"
+                />
+              </div>
+
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="name">Name</Label>
+                  <Input
+                    id="name"
+                    name="name"
+                    required
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="Your name"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="your@email.com"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="phone">Phone</Label>
+                  <Input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    placeholder="Your phone number"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="message">Message</Label>
+                  <Textarea
+                    id="message"
+                    name="message"
+                    required
+                    value={formData.message}
+                    onChange={handleChange}
+                    placeholder="Your message"
+                    rows={4}
+                  />
+                </div>
+
+                <Button 
+                  type="submit" 
+                  className="w-full"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Sending..." : "Send Message"}
+                </Button>
+              </form>
             </div>
           </div>
         </div>
