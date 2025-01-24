@@ -12,20 +12,22 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, Phone, User } from "lucide-react";
+import { Mail, Phone, User, Building2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useRef, useState } from "react";
 
+const RECAPTCHA_SITE_KEY = "6LfTOFApAAAAAIt8oQWuUH_7dgqvXGhHvzqxzI4C";
+const BIGIN_FORM_URL = "https://bigin.zoho.com/crm/WebformScriptServlet";
+
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
+  company: z.string().min(2, "Company name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
   phone: z.string().min(10, "Phone number must be at least 10 digits"),
   message: z.string().min(10, "Message must be at least 10 characters"),
   honeypot: z.string().max(0, "This field should be empty"),
 });
-
-const RECAPTCHA_SITE_KEY = "6LfTOFApAAAAAIt8oQWuUH_7dgqvXGhHvzqxzI4C";
 
 export default function Contact() {
   const { toast } = useToast();
@@ -37,6 +39,7 @@ export default function Contact() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
+      company: "",
       email: "",
       phone: "",
       message: "",
@@ -75,15 +78,10 @@ export default function Contact() {
 
     setIsSubmitting(true);
     try {
-      console.log('Starting form submission process');
-      
       // Get reCAPTCHA token
-      console.log('Requesting reCAPTCHA token');
       const token = await window.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'submit' });
-      console.log('Received reCAPTCHA token');
 
-      // Submit form to edge function
-      console.log('Submitting to edge function');
+      // Submit to Supabase edge function
       const { data, error } = await supabase.functions.invoke('contact', {
         body: JSON.stringify({
           ...values,
@@ -91,24 +89,31 @@ export default function Contact() {
         }),
       });
 
-      console.log('Edge function response:', { data, error });
-
       if (error) {
         throw error;
       }
 
-      if (data.biginError) {
-        console.warn('Bigin CRM integration error:', data.biginError);
-        toast({
-          title: "Form submitted",
-          description: "Your message was received, but there was an issue with our CRM. Our team has been notified.",
-        });
-      } else {
-        toast({
-          title: "Message sent!",
-          description: "We'll get back to you as soon as possible.",
-        });
+      // Submit to Bigin form
+      const biginFormData = new FormData();
+      biginFormData.append('Last Name', values.name);
+      biginFormData.append('Accounts.Account Name', values.company);
+      biginFormData.append('Email', values.email);
+      biginFormData.append('Phone', values.phone);
+      biginFormData.append('Description', values.message);
+
+      const biginResponse = await fetch(BIGIN_FORM_URL, {
+        method: 'POST',
+        body: biginFormData,
+      });
+
+      if (!biginResponse.ok) {
+        console.warn('Bigin form submission error:', await biginResponse.text());
       }
+
+      toast({
+        title: "Message sent!",
+        description: "We'll get back to you as soon as possible.",
+      });
       
       form.reset();
     } catch (error: any) {
@@ -166,6 +171,23 @@ export default function Contact() {
 
                 <FormField
                   control={form.control}
+                  name="company"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="flex items-center gap-2">
+                        <Building2 className="h-4 w-4" />
+                        Company
+                      </FormLabel>
+                      <FormControl>
+                        <Input placeholder="Acme Inc." {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
                   name="email"
                   render={({ field }) => (
                     <FormItem>
@@ -203,10 +225,10 @@ export default function Contact() {
                   name="message"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Message</FormLabel>
+                      <FormLabel>How Can We Help?</FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder="How can we help you?"
+                          placeholder="Tell us about your needs..."
                           className="min-h-[120px]"
                           {...field}
                         />
