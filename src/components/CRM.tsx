@@ -63,7 +63,25 @@ export const CRM = () => {
         .select('*');
       
       if (error) throw error;
-      setCustomers(data || []);
+
+      // Map the snake_case database fields to camelCase interface properties
+      const mappedCustomers: Customer[] = (data || []).map(customer => ({
+        id: customer.id,
+        firstName: customer.first_name,
+        lastName: customer.last_name,
+        email: customer.email,
+        phone: customer.phone || '',
+        company: customer.company,
+        lastContact: customer.last_contact || '',
+        status: customer.status || 'new',
+        street_address: customer.street_address,
+        city: customer.city,
+        state: customer.state,
+        zip_code: customer.zip_code,
+        notes: customer.notes
+      }));
+      
+      setCustomers(mappedCustomers);
     } catch (error: any) {
       toast({
         title: "Error",
