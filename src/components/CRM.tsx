@@ -5,11 +5,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { CustomerCard } from './crm/CustomerCard';
 import { CustomerDetails } from './crm/CustomerDetails';
+import { useAuth } from "@/components/AuthProvider";
 import type { Customer } from '@/types/customer';
 import type { CustomerDocument } from '@/types/customer-document';
 
 export const CRM = () => {
   const { toast } = useToast();
+  const { session } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
@@ -17,14 +19,17 @@ export const CRM = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    fetchCustomers();
-  }, []);
+    if (session?.user?.id) {
+      fetchCustomers();
+    }
+  }, [session?.user?.id]);
 
   const fetchCustomers = async () => {
     try {
       const { data, error } = await supabase
         .from('customers')
-        .select('*');
+        .select('*')
+        .eq('created_by', session?.user?.id);
       
       if (error) throw error;
 
@@ -45,14 +50,16 @@ export const CRM = () => {
         lifecycle_stage: (customer.lifecycle_stage as Customer['lifecycle_stage']) || 'lead',
         deal_value: customer.deal_value,
         source: customer.source,
-        owner: customer.owner
+        owner: customer.owner,
+        website: customer.website
       }));
       
       setCustomers(mappedCustomers);
     } catch (error: any) {
+      console.error('Error fetching customers:', error);
       toast({
         title: "Error",
-        description: "Failed to fetch customers",
+        description: "Failed to fetch customers: " + error.message,
         variant: "destructive",
       });
     }
@@ -63,21 +70,23 @@ export const CRM = () => {
       const { data, error } = await supabase
         .from('customer_documents')
         .select('*')
-        .eq('customer_id', customerId);
+        .eq('customer_id', customerId)
+        .eq('uploaded_by', session?.user?.id);
       
       if (error) throw error;
       setDocuments(data || []);
     } catch (error: any) {
+      console.error('Error fetching documents:', error);
       toast({
         title: "Error",
-        description: "Failed to fetch customer documents",
+        description: "Failed to fetch customer documents: " + error.message,
         variant: "destructive",
       });
     }
   };
 
   const handleFileUpload = async (file: File) => {
-    if (!selectedCustomer) return;
+    if (!selectedCustomer || !session?.user?.id) return;
 
     try {
       setIsLoading(true);
@@ -97,6 +106,7 @@ export const CRM = () => {
           customer_id: selectedCustomer.id,
           file_name: file.name,
           file_path: filePath,
+          uploaded_by: session.user.id
         });
 
       if (dbError) throw dbError;
@@ -108,9 +118,10 @@ export const CRM = () => {
 
       await fetchCustomerDocuments(selectedCustomer.id);
     } catch (error: any) {
+      console.error('Error uploading document:', error);
       toast({
         title: "Error",
-        description: "Failed to upload document",
+        description: "Failed to upload document: " + error.message,
         variant: "destructive",
       });
     } finally {
@@ -126,6 +137,16 @@ export const CRM = () => {
   const filteredCustomers = customers.filter(customer =>
     `${customer.firstName} ${customer.lastName} ${customer.email} ${customer.company}`.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  if (!session?.user?.id) {
+    return (
+      <Card className="w-full max-w-7xl mx-auto my-8">
+        <CardContent className="p-6">
+          <p className="text-center text-gray-500">Please log in to access the CRM.</p>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="w-full max-w-7xl mx-auto my-8">
