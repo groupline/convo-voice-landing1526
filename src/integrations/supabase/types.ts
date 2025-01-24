@@ -50,13 +50,17 @@ export type Database = {
           company: string | null
           created_at: string
           created_by: string | null
+          deal_value: number | null
           email: string
           first_name: string
           id: string
           last_contact: string | null
           last_name: string
+          lifecycle_stage: string | null
           notes: string | null
+          owner: string | null
           phone: string | null
+          source: string | null
           state: string | null
           status: string | null
           street_address: string | null
@@ -68,13 +72,17 @@ export type Database = {
           company?: string | null
           created_at?: string
           created_by?: string | null
+          deal_value?: number | null
           email: string
           first_name: string
           id?: string
           last_contact?: string | null
           last_name: string
+          lifecycle_stage?: string | null
           notes?: string | null
+          owner?: string | null
           phone?: string | null
+          source?: string | null
           state?: string | null
           status?: string | null
           street_address?: string | null
@@ -86,13 +94,17 @@ export type Database = {
           company?: string | null
           created_at?: string
           created_by?: string | null
+          deal_value?: number | null
           email?: string
           first_name?: string
           id?: string
           last_contact?: string | null
           last_name?: string
+          lifecycle_stage?: string | null
           notes?: string | null
+          owner?: string | null
           phone?: string | null
+          source?: string | null
           state?: string | null
           status?: string | null
           street_address?: string | null

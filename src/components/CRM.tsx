@@ -3,8 +3,10 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CustomerCard } from './crm/CustomerCard';
 import { CustomerDetails } from './crm/CustomerDetails';
+import { AddContactForm } from './crm/AddContactForm';
 import type { Customer } from '@/types/customer';
 import type { CustomerDocument } from '@/types/customer-document';
 
@@ -134,39 +136,52 @@ export const CRM = () => {
         <CardDescription>Manage your customer relationships and track interactions</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="mb-4">
-          <Input
-            placeholder="Search customers..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="max-w-sm"
-          />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-2">
-            {filteredCustomers.length === 0 ? (
-              <p className="text-center text-gray-500">No customers found</p>
-            ) : (
-              filteredCustomers.map((customer) => (
-                <CustomerCard
-                  key={customer.id}
-                  customer={customer}
-                  isSelected={selectedCustomer?.id === customer.id}
-                  onClick={() => handleCustomerClick(customer)}
-                />
-              ))
-            )}
-          </div>
+        <Tabs defaultValue="contacts" className="space-y-4">
+          <TabsList>
+            <TabsTrigger value="contacts">Contacts</TabsTrigger>
+            <TabsTrigger value="add">Add Contact</TabsTrigger>
+          </TabsList>
 
-          {selectedCustomer && (
-            <CustomerDetails
-              customer={selectedCustomer}
-              documents={documents}
-              onFileUpload={handleFileUpload}
-              isLoading={isLoading}
-            />
-          )}
-        </div>
+          <TabsContent value="contacts">
+            <div className="mb-4">
+              <Input
+                placeholder="Search contacts..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="max-w-sm"
+              />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                {filteredCustomers.length === 0 ? (
+                  <p className="text-center text-gray-500">No customers found</p>
+                ) : (
+                  filteredCustomers.map((customer) => (
+                    <CustomerCard
+                      key={customer.id}
+                      customer={customer}
+                      isSelected={selectedCustomer?.id === customer.id}
+                      onClick={() => handleCustomerClick(customer)}
+                    />
+                  ))
+                )}
+              </div>
+
+              {selectedCustomer && (
+                <CustomerDetails
+                  customer={selectedCustomer}
+                  documents={documents}
+                  onFileUpload={handleFileUpload}
+                  isLoading={isLoading}
+                />
+              )}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="add">
+            <AddContactForm onSuccess={fetchCustomers} />
+          </TabsContent>
+        </Tabs>
       </CardContent>
     </Card>
   );
