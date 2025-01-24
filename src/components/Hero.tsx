@@ -6,6 +6,10 @@ import { Spotlight } from "@/components/ui/spotlight";
 import { SplineScene } from "@/components/ui/splite";
 
 export const Hero = () => {
+  const openCalendly = () => {
+    window.open('https://calendly.com/your-calendly-link', '_blank');
+  };
+
   return (
     <section className="pt-32 pb-24 overflow-hidden">
       <div className="container mx-auto px-4">
@@ -18,7 +22,10 @@ export const Hero = () => {
             Empower your business with intelligent AI systems that generate leads autonomously and automate everyday tasks, saving you time and money
           </p>
           <div className="flex justify-center animate-fade-in">
-            <Button className="bg-primary hover:bg-primary-dark text-white px-8 py-6 text-lg">
+            <Button 
+              onClick={openCalendly}
+              className="bg-primary hover:bg-primary-dark text-white px-8 py-6 text-lg"
+            >
               Book A Call
             </Button>
           </div>

@@ -3,6 +3,10 @@ import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 
 const About = () => {
+  const openCalendly = () => {
+    window.open('https://calendly.com/your-calendly-link', '_blank');
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -24,7 +28,10 @@ const About = () => {
                 <p className="text-lg text-foreground/80">
                   At SurgeAi, we're dedicated to transforming businesses through the power of AI. Our mission is to make advanced AI technology accessible and practical for businesses of all sizes.
                 </p>
-                <Button className="bg-primary hover:bg-primary-dark text-white">
+                <Button 
+                  onClick={openCalendly}
+                  className="bg-primary hover:bg-primary-dark text-white"
+                >
                   Book A Call
                 </Button>
               </div>
@@ -66,7 +73,10 @@ const About = () => {
               <p className="text-lg text-foreground/80">
                 Let's discuss how our AI solutions can help your business grow and succeed in the digital age.
               </p>
-              <Button className="bg-primary hover:bg-primary-dark text-white">
+              <Button 
+                onClick={openCalendly}
+                className="bg-primary hover:bg-primary-dark text-white"
+              >
                 Book A Call
               </Button>
             </div>
