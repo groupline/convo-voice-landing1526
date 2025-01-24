@@ -5,7 +5,7 @@ export const Logo = () => {
   return (
     <Link to="/" className="flex items-center gap-2">
       <div className="relative w-8 h-8">
-        <div className="absolute inset-0 bg-primary rounded-lg">
+        <div className="absolute inset-0 bg-primary rounded-lg animate-logo-spin">
           <Zap className="w-5 h-5 text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
         </div>
       </div>
