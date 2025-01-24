@@ -16,6 +16,15 @@ export default function Auth() {
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!email || !password) {
+      toast({
+        title: "Error",
+        description: "Please enter both email and password",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     try {
       setLoading(true);
       const { error } = await supabase.auth.signUp({
@@ -23,9 +32,10 @@ export default function Auth() {
         password,
       });
       if (error) throw error;
+      
       toast({
         title: "Success!",
-        description: "Check your email for the confirmation link.",
+        description: "Account created successfully. You can now sign in.",
       });
     } catch (error: any) {
       toast({
@@ -40,6 +50,15 @@ export default function Auth() {
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!email || !password) {
+      toast({
+        title: "Error",
+        description: "Please enter both email and password",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       setLoading(true);
       const { error } = await supabase.auth.signInWithPassword({
@@ -47,11 +66,12 @@ export default function Auth() {
         password,
       });
       if (error) throw error;
+      
       navigate("/crm");
     } catch (error: any) {
       toast({
         title: "Error",
-        description: error.message,
+        description: "Invalid login credentials. Please check your email and password or sign up if you don't have an account.",
         variant: "destructive",
       });
     } finally {
@@ -88,6 +108,7 @@ export default function Auth() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
+                    minLength={6}
                   />
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>
@@ -111,6 +132,7 @@ export default function Auth() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
+                    minLength={6}
                   />
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>
