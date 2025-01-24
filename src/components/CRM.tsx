@@ -44,7 +44,7 @@ export const CRM = () => {
         state: customer.state,
         zip_code: customer.zip_code,
         notes: customer.notes,
-        lifecycle_stage: customer.lifecycle_stage || 'lead',
+        lifecycle_stage: (customer.lifecycle_stage as Customer['lifecycle_stage']) || 'lead',
         deal_value: customer.deal_value,
         source: customer.source,
         owner: customer.owner
