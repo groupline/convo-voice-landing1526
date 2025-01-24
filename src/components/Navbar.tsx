@@ -5,24 +5,10 @@ import {
   DialogContent,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "./AuthProvider";
-import { useToast } from "./ui/use-toast";
 
 export const Navbar = () => {
   const { session } = useAuth();
-  const { toast } = useToast();
-
-  const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      toast({
-        title: "Error",
-        description: "Failed to sign out",
-        variant: "destructive",
-      });
-    }
-  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 bg-background/80 backdrop-blur-md z-50 border-b">
@@ -38,11 +24,7 @@ export const Navbar = () => {
           <a href="/contact" className="text-foreground/80 hover:text-foreground transition-colors">
             Contact
           </a>
-          {session ? (
-            <Button variant="outline" onClick={handleLogout}>
-              Sign Out
-            </Button>
-          ) : (
+          {!session && (
             <Dialog>
               <DialogTrigger asChild>
                 <Button variant="default" className="bg-primary hover:bg-primary-dark text-white">
