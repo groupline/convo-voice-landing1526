@@ -1,7 +1,28 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Contact = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Add event listener to the iframe to detect form submission
+    const iframe = document.getElementById('hidden6623005000000502096Frame');
+    if (iframe) {
+      iframe.addEventListener('load', () => {
+        try {
+          const doc = (iframe as HTMLIFrameElement).contentWindow?.document;
+          if (doc?.body.childElementCount !== 0) {
+            navigate('/thank-you');
+          }
+        } catch (error) {
+          navigate('/thank-you');
+        }
+      });
+    }
+  }, [navigate]);
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
