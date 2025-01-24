@@ -29,14 +29,114 @@
   @apply bg-white/80 backdrop-blur-lg;
 }
 
-@keyframes floating {
-  0% {
-    transform: translateY(0px);
+/* Form Styles */
+.wf-parent {
+  padding: 30px 0;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: auto;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.wf-wrapper {
+  width: 100%;
+  max-width: 700px;
+  border-radius: 10px;
+  margin: auto;
+  border: none;
+  background-color: #fff;
+  color: #222;
+  box-shadow: 0px 0px 2px 0 #00000033;
+}
+
+.wf-form-component {
+  padding: 30px 40px 60px;
+}
+
+.wf-header {
+  font-size: 22px;
+  padding-bottom: 35px;
+  font-weight: bold;
+  word-break: break-word;
+}
+
+.wf-row {
+  margin-bottom: 20px;
+}
+
+.wf-label {
+  padding: 7px 0;
+  word-break: break-word;
+}
+
+.wf-field {
+  text-align: left;
+  word-break: break-word;
+  border: 0;
+  position: relative;
+}
+
+.wf-field-inner {
+  position: relative;
+  display: flex;
+  flex: 1;
+}
+
+.wf-field-input {
+  width: 100%;
+  border: 1px solid #BDC8D3;
+  border-radius: 4px;
+  padding: 10px 15px;
+  min-height: 38px;
+  font-size: 15px;
+  font-family: inherit;
+}
+
+.wf-field-input:focus {
+  border: 1px solid #1980d8;
+}
+
+.wf-field-mandatory .wf-field-inner::before {
+  content: '';
+  position: absolute;
+  left: 0px;
+  background-color: #ff6a6a;
+  width: 3px;
+  height: 100%;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+}
+
+.wf-btn {
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 15px;
+  cursor: pointer;
+  font-weight: bold;
+  font-family: inherit;
+}
+
+.wform-btn-wrap {
+  display: flex;
+  margin-top: 40px;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+}
+
+@media screen and (max-width: 768px) {
+  .wf-wrapper {
+    max-width: 700px;
+    width: calc(100% - 40px);
+    border: 0;
   }
-  50% {
-    transform: translateY(-20px);
-  }
-  100% {
-    transform: translateY(0px);
+  
+  .wf-form-component {
+    padding: 20px;
+    padding-bottom: 60px;
   }
 }

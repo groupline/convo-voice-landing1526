@@ -21,6 +21,16 @@ const Contact = () => {
         }
       });
     }
+
+    // Add the script tag for form validation
+    const script = document.createElement('script');
+    script.id = 'wf_script';
+    script.src = 'https://bigin.zoho.com/crm/WebformScriptServlet?rid=b5aacd64637fe2677a2e6f437053752a15b67b80204192b6dc4db936118fec69db6f287d6cd2b90a35cee4a6b0bd4f8bgid09a9025d48f23ad441aecf5a4f5a3a9d66c74edee4bc49b999a2df91f72414d7';
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
   }, [navigate]);
 
   return (
@@ -28,92 +38,89 @@ const Contact = () => {
       <Navbar />
       <div className="container mx-auto px-4 py-24">
         <div className="max-w-3xl mx-auto">
-          <h1 className="text-4xl font-bold text-center mb-12">Contact Us</h1>
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <div className="wf-parent" id="BiginWebToRecordFormParent6623005000000502096">
-              <div className="wf-wrapper" id="BiginWebToRecordFormDiv6623005000000502096" style={{ maxWidth: '100%', border: 'none', boxShadow: 'none' }}>
-                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <form
-                  id="BiginWebToRecordForm6623005000000502096"
-                  name="BiginWebToRecordForm6623005000000502096"
-                  className="wf-form-component space-y-6"
-                  method="POST"
-                  encType="multipart/form-data"
-                  target="hidden6623005000000502096Frame"
-                  style={{ padding: 0 }}
-                >
-                  <input type="text" style={{ display: "none" }} name="xnQsjsdp" value="fffda106c8bee5693de99c88b7c7bf5b4d268e320d708974df163c0b08cc478a" />
-                  <input type="hidden" name="zc_gad" id="zc_gad" value="" />
-                  <input type="text" style={{ display: "none" }} name="xmIwtLD" value="a51d093103b8190084e96996b348c984182bfb0ad6c2c32665aa36e6177cc1f8d51a644c2cf8e73ac949a831b3f2781f" />
-                  <input type="text" style={{ display: "none" }} name="actionType" value="Q29udGFjdHM=" />
-                  <input type="hidden" name="rmsg" id="rmsg" value="true" />
-                  <input type="text" style={{ display: "none" }} name="returnURL" value="null" />
-                  
-                  <div id="elementDiv6623005000000502096" className="space-y-6">
-                    <div className="space-y-4">
-                      <div className="form-group">
-                        <label className="block text-sm font-medium mb-2">Last Name *</label>
-                        <input 
-                          name="Last Name" 
-                          maxLength={80} 
-                          type="text" 
-                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
-                          required
-                        />
+          <div className='wf-parent' id='BiginWebToRecordFormParent6623005000000502096' style={{backgroundColor: '#EAEEF2'}}>
+            <div className='wf-wrapper' id='BiginWebToRecordFormDiv6623005000000502096'>
+              <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+              <META HTTP-EQUIV='content-type' CONTENT='text/html;charset=UTF-8' />
+              <form 
+                id='BiginWebToRecordForm6623005000000502096' 
+                name='BiginWebToRecordForm6623005000000502096' 
+                className='wf-form-component' 
+                data-ux-form-alignment='top' 
+                style={{fontFamily: 'Arial', position: 'relative', fontSize: '15px'}} 
+                method='POST' 
+                encType='multipart/form-data'
+                target="hidden6623005000000502096Frame"
+              >
+                <input type='text' style={{display: 'none'}} name='xnQsjsdp' value='09a9025d48f23ad441aecf5a4f5a3a9d66c74edee4bc49b999a2df91f72414d7' />
+                <input type='hidden' name='zc_gad' id='zc_gad' value='' />
+                <input type='text' style={{display: 'none'}} name='xmIwtLD' value='b5aacd64637fe2677a2e6f437053752a15b67b80204192b6dc4db936118fec69db6f287d6cd2b90a35cee4a6b0bd4f8b' />
+                <input type='text' style={{display: 'none'}} name='actionType' value='Q29udGFjdHM=' />
+                <input type='text' style={{display: 'none'}} name='returnURL' value='null' />
+                <div className='wf-header'>Contact Us</div>
+                <div id='elementDiv6623005000000502096' className='wf-form-wrapper'>
+                  <div className='wf-row'>  
+                    <div className='wf-label'>First Name</div>
+                    <div className='wf-field'>
+                      <div className='wf-field-inner'>
+                        <input name='First Name' maxLength={40} type='text' className='wf-field-item wf-field-input' />
                       </div>
-                      
-                      <div className="form-group">
-                        <label className="block text-sm font-medium mb-2">Company Name *</label>
-                        <input 
-                          name="Accounts.Account Name" 
-                          maxLength={200} 
-                          type="text" 
-                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
-                          required
-                        />
-                      </div>
-                      
-                      <div className="form-group">
-                        <label className="block text-sm font-medium mb-2">Email</label>
-                        <input 
-                          name="Email" 
-                          maxLength={100} 
-                          type="email" 
-                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
-                        />
-                      </div>
-                      
-                      <div className="form-group">
-                        <label className="block text-sm font-medium mb-2">Phone</label>
-                        <input 
-                          name="Phone" 
-                          maxLength={50} 
-                          type="tel" 
-                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
-                        />
-                      </div>
-                      
-                      <div className="form-group">
-                        <label className="block text-sm font-medium mb-2">How Can We Help?</label>
-                        <textarea 
-                          name="Description" 
-                          maxLength={32000} 
-                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent min-h-[120px]"
-                        ></textarea>
-                      </div>
-                    </div>
-                    
-                    <div className="mt-6">
-                      <button 
-                        type="submit" 
-                        className="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-3 px-6 rounded-md transition-colors"
-                      >
-                        Submit
-                      </button>
                     </div>
                   </div>
-                </form>
-              </div>
+                  <div className='wf-row'>  
+                    <div className='wf-label'>Last Name</div>
+                    <div className='wf-field wf-field-mandatory'>
+                      <div className='wf-field-inner'>
+                        <input name='Last Name' maxLength={80} type='text' className='wf-field-item wf-field-input' />
+                      </div>
+                    </div>
+                  </div>
+                  <div className='wf-row'>  
+                    <div className='wf-label'>Email</div>
+                    <div className='wf-field'>
+                      <div className='wf-field-inner'>
+                        <input name='Email' maxLength={100} type='email' className='wf-field-item wf-field-input' />
+                      </div>
+                    </div>
+                  </div>
+                  <div className='wf-row'>  
+                    <div className='wf-label'>Company Name</div>
+                    <div className='wf-field wf-field-mandatory'>
+                      <div className='wf-field-inner'>
+                        <input name='Accounts.Account Name' maxLength={200} type='text' className='wf-field-item wf-field-input' />
+                      </div>
+                    </div>
+                  </div>
+                  <div className='wf-row'>  
+                    <div className='wf-label'>Website</div>
+                    <div className='wf-field'>
+                      <div className='wf-field-inner'>
+                        <input name='Accounts.Website' maxLength={255} type='url' className='wf-field-item wf-field-input' />
+                      </div>
+                    </div>
+                  </div>
+                  <div className='wf-row'>  
+                    <div className='wf-label'>Phone</div>
+                    <div className='wf-field'>
+                      <div className='wf-field-inner'>
+                        <input name='Phone' maxLength={50} type='tel' className='wf-field-item wf-field-input' />
+                      </div>
+                    </div>
+                  </div>
+                  <div className='wf-row'>  
+                    <div className='wf-label'>How Can We Help?</div>
+                    <div className='wf-field'>
+                      <div className='wf-field-inner'>
+                        <textarea name='Description' maxLength={32000} className='wf-field-item wf-field-input' style={{resize: 'none'}} />
+                      </div>
+                    </div>
+                  </div>
+                  <div className='wform-btn-wrap' data-ux-pos='left'>
+                    <input type='submit' className='wf-btn' data-ux-btn-type='default' style={{backgroundColor: '#1980d8', color: '#fff', border: '1px solid #1980d8', width: 'auto'}} value='Submit' />
+                  </div>
+                </div>
+              </form>
+              <iframe name="hidden6623005000000502096Frame" id="hidden6623005000000502096Frame" style={{display: 'none'}}></iframe>
             </div>
           </div>
         </div>
