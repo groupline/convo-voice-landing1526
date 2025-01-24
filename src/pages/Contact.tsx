@@ -10,7 +10,7 @@ export default function Contact() {
                 We'd love to hear from you. Send us a message and we'll respond as soon as possible.
               </p>
             </div>
-            <div id="formDiv6623005000000502096"></div>
+            <div id="formDiv6623005000000502096" className="bg-white"></div>
           </div>
         </div>
       </div>
