@@ -14,10 +14,12 @@ const Map = () => {
     
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/light-v11',
+      style: 'mapbox://styles/mapbox/streets-v12', // Changed to streets style for better visibility
       center: [-106.956, 44.797], // Sheridan, Wyoming coordinates
-      zoom: 15,
-      attributionControl: true
+      zoom: 14, // Slightly adjusted zoom level
+      attributionControl: true,
+      pitch: 0, // Add pitch for better perspective
+      bearing: 0 // Add bearing for orientation
     });
 
     // Add navigation controls
@@ -29,7 +31,9 @@ const Map = () => {
     );
 
     // Add marker
-    new mapboxgl.Marker()
+    new mapboxgl.Marker({
+      color: "#9b87f5" // Using primary color from theme
+    })
       .setLngLat([-106.956, 44.797])
       .addTo(map.current);
 
@@ -45,6 +49,11 @@ const Map = () => {
 
     // Add resize listener
     window.addEventListener('resize', resizeMap);
+
+    // Wait for map to load before doing anything else
+    map.current.on('load', () => {
+      map.current?.resize();
+    });
 
     return () => {
       window.removeEventListener('resize', resizeMap);
