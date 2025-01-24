@@ -1,7 +1,7 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Map from "@/components/Map";
 import { MapPin, Mail, Phone } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -14,26 +14,20 @@ const Contact = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [webhookUrl, setWebhookUrl] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
+    company: "",
     message: "",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!webhookUrl) {
-      toast({
-        title: "Error",
-        description: "Please set up your Zapier webhook URL",
-        variant: "destructive",
-      });
-      return;
-    }
-
+    // Replace this with your actual Zapier webhook URL
+    const webhookUrl = "YOUR_ZAPIER_WEBHOOK_URL";
+    
     setIsSubmitting(true);
     console.log("Submitting form data to Zapier:", formData);
 
@@ -112,17 +106,6 @@ const Contact = () => {
             </div>
 
             <div className="space-y-6">
-              <div className="space-y-4">
-                <Label htmlFor="webhookUrl">Zapier Webhook URL</Label>
-                <Input
-                  id="webhookUrl"
-                  type="text"
-                  value={webhookUrl}
-                  onChange={(e) => setWebhookUrl(e.target.value)}
-                  placeholder="Enter your Zapier webhook URL"
-                />
-              </div>
-
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="name">Name</Label>
@@ -158,6 +141,18 @@ const Contact = () => {
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="Your phone number"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="company">Company</Label>
+                  <Input
+                    id="company"
+                    name="company"
+                    type="text"
+                    value={formData.company}
+                    onChange={handleChange}
+                    placeholder="Your company name"
                   />
                 </div>
 
