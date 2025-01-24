@@ -4,7 +4,23 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Map from "@/components/Map";
 import { MapPin, Mail, Phone } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
+
+declare global {
+  interface Window {
+    hbspt?: {
+      forms: {
+        create: (config: {
+          region: string;
+          portalId: string;
+          formId: string;
+          target: string;
+          onFormSubmitted?: (form: any) => void;
+        }) => void;
+      };
+    };
+  }
+}
 
 const Contact = () => {
   const navigate = useNavigate();
@@ -14,24 +30,27 @@ const Contact = () => {
   useEffect(() => {
     // Add HubSpot form script
     const script = document.createElement('script');
-    script.src = 'https://js.hsforms.net/forms/embed/49067989.js';
-    script.defer = true;
-    document.body.appendChild(script);
-
-    // Function to handle form submission response
-    const handleFormSubmitted = (event: MessageEvent) => {
-      if (event.data.type === 'hsFormCallback' && event.data.eventName === 'onFormSubmitted') {
-        setIsSubmitting(false);
-        toast({
-          title: "Success!",
-          description: "Your message has been sent successfully.",
+    script.src = 'https://js.hsforms.net/forms/v2.js';
+    script.async = true;
+    script.onload = () => {
+      if (window.hbspt) {
+        window.hbspt.forms.create({
+          region: "na1",
+          portalId: "49067989",
+          formId: "0ba59bc7-6b42-4986-8b6a-ba84da9a8283",
+          target: "#hubspotForm",
+          onFormSubmitted: () => {
+            setIsSubmitting(false);
+            toast({
+              title: "Success!",
+              description: "Your message has been sent successfully.",
+            });
+            navigate('/thank-you');
+          }
         });
-        navigate('/thank-you');
       }
     };
-
-    // Add event listener for HubSpot form submission
-    window.addEventListener('message', handleFormSubmitted);
+    document.body.appendChild(script);
 
     return () => {
       // Cleanup
@@ -39,7 +58,6 @@ const Contact = () => {
       if (scriptElement) {
         document.body.removeChild(scriptElement);
       }
-      window.removeEventListener('message', handleFormSubmitted);
     };
   }, [navigate, toast]);
 
@@ -79,12 +97,7 @@ const Contact = () => {
             </div>
 
             <div>
-              <div 
-                className="hs-form-frame" 
-                data-region="na1" 
-                data-form-id="0ba59bc7-6b42-4986-8b6a-ba84da9a8283" 
-                data-portal-id="49067989"
-              />
+              <div id="hubspotForm" />
             </div>
           </div>
         </div>
