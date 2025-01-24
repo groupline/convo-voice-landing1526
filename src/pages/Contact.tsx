@@ -14,6 +14,17 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Mail, Phone, User } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { useEffect, useRef } from "react";
+
+declare global {
+  interface Window {
+    grecaptcha: {
+      ready: (callback: () => void) => void;
+      execute: (siteKey: string, options: { action: string }) => Promise<string>;
+    };
+  }
+}
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -23,8 +34,11 @@ const formSchema = z.object({
   honeypot: z.string().max(0, "This field should be empty"),
 });
 
+const RECAPTCHA_SITE_KEY = "6LfTOFApAAAAAIt8oQWuUH_7dgqvXGhHvzqxzI4C";
+
 export default function Contact() {
   const { toast } = useToast();
+  const recaptchaLoadedRef = useRef(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -36,21 +50,51 @@ export default function Contact() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  useEffect(() => {
+    if (!recaptchaLoadedRef.current) {
+      const script = document.createElement("script");
+      script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
+      script.async = true;
+      document.head.appendChild(script);
+      recaptchaLoadedRef.current = true;
+    }
+  }, []);
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     if (values.honeypot) {
       // If honeypot is filled, silently reject the submission
       return;
     }
-    
-    // Here you would typically send the form data to your backend
-    console.log(values);
-    
-    toast({
-      title: "Message sent!",
-      description: "We'll get back to you as soon as possible.",
-    });
-    
-    form.reset();
+
+    try {
+      // Get reCAPTCHA token
+      const token = await window.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'submit' });
+
+      // Submit form to edge function
+      const { data, error } = await supabase.functions.invoke('contact', {
+        body: JSON.stringify({
+          ...values,
+          captchaToken: token,
+        }),
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      toast({
+        title: "Message sent!",
+        description: "We'll get back to you as soon as possible.",
+      });
+      
+      form.reset();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to send message. Please try again later.",
+        variant: "destructive",
+      });
+    }
   }
 
   return (
