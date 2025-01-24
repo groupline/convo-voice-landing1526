@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 
 const About = () => {
   const openCalendly = () => {
-    window.open('https://calendly.com/your-calendly-link', '_blank');
+    window.open('https://calendly.com/andrew-surgeai', '_blank');
   };
 
   return (

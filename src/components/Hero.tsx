@@ -7,7 +7,7 @@ import { SplineScene } from "@/components/ui/splite";
 
 export const Hero = () => {
   const openCalendly = () => {
-    window.open('https://calendly.com/your-calendly-link', '_blank');
+    window.open('https://calendly.com/andrew-surgeai', '_blank');
   };
 
   return (
