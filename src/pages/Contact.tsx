@@ -18,12 +18,40 @@ export default function Contact() {
         message: (event.currentTarget.elements.namedItem('Description') as HTMLTextAreaElement).value,
       };
 
-      const { error } = await supabase.functions.invoke('contact', {
-        body: JSON.stringify(formData),
+      // Store submission in Supabase for rate limiting
+      const { error: supabaseError } = await supabase
+        .from('contact_form_submissions')
+        .insert([
+          {
+            email: formData.email,
+            ip_address: 'client-side',
+          }
+        ]);
+
+      if (supabaseError) {
+        throw new Error('Rate limit exceeded. Please try again later.');
+      }
+
+      // Direct API call to Bigin CRM
+      const biginResponse = await fetch('https://www.zohoapis.com/bigin/v2/Leads', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Zoho-oauthtoken ${import.meta.env.VITE_BIGIN_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          data: [{
+            Last_Name: formData.name,
+            Email: formData.email,
+            Phone: formData.phone,
+            Description: formData.message,
+            Lead_Source: 'Website Contact Form'
+          }]
+        })
       });
 
-      if (error) {
-        throw error;
+      if (!biginResponse.ok) {
+        throw new Error('Failed to create lead in CRM');
       }
 
       toast({
