@@ -12,68 +12,36 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    // Add the script tag for form
+    // Add HubSpot form script
     const script = document.createElement('script');
-    script.id = 'formScript6623005000000502096';
-    script.src = 'https://us.bigin.online/org876950633/forms/contact-us?script=$sYG';
+    script.src = 'https://js.hsforms.net/forms/embed/49067989.js';
+    script.defer = true;
     document.body.appendChild(script);
 
     // Function to handle form submission response
-    const handleFormResponse = () => {
-      if (isSubmitting) {
-        setTimeout(() => {
-          toast({
-            title: "Success!",
-            description: "Your message has been sent successfully.",
-          });
-          navigate('/thank-you');
-        }, 1000);
+    const handleFormSubmitted = (event: MessageEvent) => {
+      if (event.data.type === 'hsFormCallback' && event.data.eventName === 'onFormSubmitted') {
+        setIsSubmitting(false);
+        toast({
+          title: "Success!",
+          description: "Your message has been sent successfully.",
+        });
+        navigate('/thank-you');
       }
     };
 
-    // Add event listener for form submission
-    const form = document.getElementById('BiginWebToRecordForm6623005000000502096');
-    if (form) {
-      form.addEventListener('submit', handleFormResponse);
-    }
+    // Add event listener for HubSpot form submission
+    window.addEventListener('message', handleFormSubmitted);
 
     return () => {
       // Cleanup
-      const scriptElement = document.getElementById('formScript6623005000000502096');
+      const scriptElement = document.querySelector('script[src*="hsforms.net"]');
       if (scriptElement) {
         document.body.removeChild(scriptElement);
       }
-      if (form) {
-        form.removeEventListener('submit', handleFormResponse);
-      }
+      window.removeEventListener('message', handleFormSubmitted);
     };
-  }, [navigate, toast, isSubmitting]);
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const form = event.currentTarget;
-    
-    // Basic form validation
-    const requiredFields = ['Last Name', 'Accounts.Account Name'];
-    let isValid = true;
-    
-    requiredFields.forEach(fieldName => {
-      const input = form.elements.namedItem(fieldName) as HTMLInputElement;
-      if (!input?.value) {
-        toast({
-          variant: "destructive",
-          title: "Required Field Missing",
-          description: `Please fill in the ${fieldName.replace('Accounts.', '')} field.`,
-        });
-        isValid = false;
-      }
-    });
-
-    if (!isValid) return;
-
-    setIsSubmitting(true);
-    form.submit();
-  };
+  }, [navigate, toast]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -111,96 +79,12 @@ const Contact = () => {
             </div>
 
             <div>
-              <div className='wf-parent' id='BiginWebToRecordFormParent6623005000000502096'>
-                <div className='wf-wrapper' id='BiginWebToRecordFormDiv6623005000000502096'>
-                  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-                  <meta httpEquiv='content-type' content='text/html;charset=UTF-8' />
-                  <form 
-                    id='BiginWebToRecordForm6623005000000502096' 
-                    name='BiginWebToRecordForm6623005000000502096' 
-                    className='wf-form-component' 
-                    data-ux-form-alignment='top' 
-                    method='POST' 
-                    encType='multipart/form-data'
-                    onSubmit={handleSubmit}
-                  >
-                    <input type='text' style={{display: 'none'}} name='xnQsjsdp' value='09a9025d48f23ad441aecf5a4f5a3a9d66c74edee4bc49b999a2df91f72414d7' />
-                    <input type='hidden' name='zc_gad' id='zc_gad' value='' />
-                    <input type='text' style={{display: 'none'}} name='xmIwtLD' value='b5aacd64637fe2677a2e6f437053752a15b67b80204192b6dc4db936118fec69db6f287d6cd2b90a35cee4a6b0bd4f8b' />
-                    <input type='text' style={{display: 'none'}} name='actionType' value='Q29udGFjdHM=' />
-                    <input type='text' style={{display: 'none'}} name='returnURL' value={window.location.origin + '/thank-you'} />
-                    
-                    <div className='wf-row'>  
-                      <div className='wf-label'>First Name</div>
-                      <div className='wf-field'>
-                        <div className='wf-field-inner'>
-                          <input name='First Name' maxLength={40} type='text' className='wf-field-item wf-field-input' />
-                        </div>
-                      </div>
-                    </div>
-                    <div className='wf-row'>  
-                      <div className='wf-label'>Last Name *</div>
-                      <div className='wf-field wf-field-mandatory'>
-                        <div className='wf-field-inner'>
-                          <input name='Last Name' maxLength={80} type='text' required className='wf-field-item wf-field-input' />
-                        </div>
-                      </div>
-                    </div>
-                    <div className='wf-row'>  
-                      <div className='wf-label'>Email</div>
-                      <div className='wf-field'>
-                        <div className='wf-field-inner'>
-                          <input name='Email' maxLength={100} type='email' className='wf-field-item wf-field-input' />
-                        </div>
-                      </div>
-                    </div>
-                    <div className='wf-row'>  
-                      <div className='wf-label'>Company Name *</div>
-                      <div className='wf-field wf-field-mandatory'>
-                        <div className='wf-field-inner'>
-                          <input name='Accounts.Account Name' maxLength={200} type='text' required className='wf-field-item wf-field-input' />
-                        </div>
-                      </div>
-                    </div>
-                    <div className='wf-row'>  
-                      <div className='wf-label'>Website</div>
-                      <div className='wf-field'>
-                        <div className='wf-field-inner'>
-                          <input name='Accounts.Website' maxLength={255} type='url' className='wf-field-item wf-field-input' />
-                        </div>
-                      </div>
-                    </div>
-                    <div className='wf-row'>  
-                      <div className='wf-label'>Phone</div>
-                      <div className='wf-field'>
-                        <div className='wf-field-inner'>
-                          <input name='Phone' maxLength={50} type='tel' className='wf-field-item wf-field-input' />
-                        </div>
-                      </div>
-                    </div>
-                    <div className='wf-row'>  
-                      <div className='wf-label'>How Can We Help?</div>
-                      <div className='wf-field'>
-                        <div className='wf-field-inner'>
-                          <textarea name='Description' maxLength={32000} className='wf-field-item wf-field-input' style={{resize: 'none'}} />
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className='wform-btn-wrap' data-ux-pos='left'>
-                      <button 
-                        type='submit' 
-                        className='wf-btn' 
-                        data-ux-btn-type='default' 
-                        style={{backgroundColor: '#1980d8', color: '#fff', border: '1px solid #1980d8', width: 'auto'}}
-                        disabled={isSubmitting}
-                      >
-                        {isSubmitting ? 'Submitting...' : 'Submit'}
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </div>
+              <div 
+                className="hs-form-frame" 
+                data-region="na1" 
+                data-form-id="0ba59bc7-6b42-4986-8b6a-ba84da9a8283" 
+                data-portal-id="49067989"
+              />
             </div>
           </div>
         </div>
