@@ -25,7 +25,7 @@ export const ContactInfo = () => {
         </div>
         <div className="flex items-center gap-3 text-gray-600">
           <Phone className="w-5 h-5 text-primary" />
-          <a href="tel:+1234567890">+1 (234) 567-890</a>
+          <a href="tel:307-201-2504">307-201-2504</a>
         </div>
       </div>
 
