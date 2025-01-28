@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Link } from "react-router-dom";
 
 export const Navbar = () => {
   return (
@@ -20,12 +21,12 @@ export const Navbar = () => {
           <a href="#features" className="text-foreground/80 hover:text-foreground transition-colors">
             Features
           </a>
-          <a href="/about" className="text-foreground/80 hover:text-foreground transition-colors">
+          <Link to="/about" className="text-foreground/80 hover:text-foreground transition-colors">
             About
-          </a>
-          <a href="/contact" className="text-foreground/80 hover:text-foreground transition-colors">
+          </Link>
+          <Link to="/contact" className="text-foreground/80 hover:text-foreground transition-colors">
             Contact
-          </a>
+          </Link>
           <Dialog>
             <DialogTrigger asChild>
               <Button variant="default" className="bg-primary hover:bg-primary-dark text-white">
